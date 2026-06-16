@@ -364,6 +364,133 @@
     .phase-body ul li:last-child { border-bottom: none; }
     .phase-body ul li::before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
 
+    /* TRAFFIC SECTION */
+    .traffic-section {
+      max-width: 960px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+    }
+    .traffic-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: var(--primary); }
+
+    .traffic-hero {
+      background: linear-gradient(135deg, #1a1a2e, #e53e3e);
+      border-radius: 14px;
+      padding: 32px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+    .traffic-hero .t-label { font-size: 16px; font-weight: 600; }
+    .traffic-hero .t-label small { display: block; font-size: 13px; opacity: 0.7; margin-top: 4px; font-weight: 400; }
+    .traffic-hero .t-num { font-size: 72px; font-weight: 900; line-height: 1; }
+    .traffic-hero .t-num span { font-size: 22px; opacity: 0.6; }
+    .traffic-hero .t-note {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-size: 14px;
+      max-width: 280px;
+      line-height: 1.6;
+    }
+    .traffic-hero .t-note strong { display: block; margin-bottom: 4px; font-size: 15px; }
+
+    .traffic-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .t-stat {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .t-stat .val {
+      font-size: 36px;
+      font-weight: 900;
+      display: block;
+      line-height: 1.1;
+    }
+    .t-stat .val.red { color: var(--red); }
+    .t-stat .val.yellow { color: var(--yellow); }
+    .t-stat .val.green { color: var(--green); }
+    .t-stat .lbl { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    .traffic-table-wrap {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      margin-bottom: 20px;
+    }
+    .traffic-table-wrap h3 {
+      padding: 16px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      background: #f8f9fa;
+    }
+    .traffic-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .traffic-table thead tr { background: var(--primary); color: white; }
+    .traffic-table thead th {
+      padding: 12px 18px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .traffic-table tbody tr { border-bottom: 1px solid var(--border); }
+    .traffic-table tbody tr:last-child { border-bottom: none; }
+    .traffic-table tbody tr:hover { background: #f7fafc; }
+    .traffic-table tbody td { padding: 14px 18px; font-size: 14px; }
+    .traffic-table .url { font-size: 12px; color: var(--muted); display: block; margin-top: 2px; }
+    .visits-badge {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 4px 12px;
+      border-radius: 8px;
+      background: #fff5f5;
+      color: var(--red);
+    }
+    .visits-badge.ok { background: #fffbeb; color: var(--yellow); }
+
+    .keyword-warning {
+      background: #fff5f5;
+      border: 1px solid #fed7d7;
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .keyword-warning .icon { font-size: 28px; flex-shrink: 0; }
+    .keyword-warning h4 { font-size: 16px; font-weight: 700; color: var(--red); margin-bottom: 8px; }
+    .keyword-warning ul { list-style: none; }
+    .keyword-warning ul li {
+      font-size: 14px;
+      color: var(--text);
+      padding: 4px 0;
+      display: flex;
+      gap: 8px;
+    }
+    .keyword-warning ul li::before { content: "✗"; color: var(--red); font-weight: 700; }
+
+    .traffic-source { font-size: 12px; color: var(--muted); text-align: right; margin-top: 8px; }
+
     /* FOOTER */
     footer {
       background: var(--primary);
@@ -410,8 +537,8 @@
   <div class="meta">
     <div class="meta-item"><span class="val">6</span><span class="lbl">Dimensiones analizadas</span></div>
     <div class="meta-item"><span class="val">4.3</span><span class="lbl">Puntuación media / 10</span></div>
-    <div class="meta-item"><span class="val">18+</span><span class="lbl">Recomendaciones accionables</span></div>
-    <div class="meta-item"><span class="val">Jun 2026</span><span class="lbl">Fecha del informe</span></div>
+    <div class="meta-item"><span class="val">61</span><span class="lbl">Visitas orgánicas / mes</span></div>
+    <div class="meta-item"><span class="val">0</span><span class="lbl">Keywords en Google top 30</span></div>
   </div>
 </div>
 
@@ -948,6 +1075,132 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- DATOS DE TRÁFICO REAL -->
+<div class="section-divider">Datos de tráfico real — obtenidos mediante análisis automatizado</div>
+
+<div class="traffic-section">
+  <h2>Tráfico Web Real — Datos Verificados</h2>
+
+  <div class="traffic-hero">
+    <div class="t-label">
+      Visitas orgánicas mensuales estimadas
+      <small>Fuente: Ubersuggest · Junio 2026</small>
+    </div>
+    <div class="t-num">61 <span>/mes</span></div>
+    <div class="t-note">
+      <strong>Diagnóstico crítico</strong>
+      Una empresa con 15 años de experiencia y fabricación propia recibe menos de 61 visitas orgánicas al mes. El potencial de crecimiento con las mejoras del informe es enorme.
+    </div>
+  </div>
+
+  <div class="traffic-stats">
+    <div class="t-stat">
+      <span class="val red">0</span>
+      <div class="lbl">Keywords posicionadas en Google</div>
+    </div>
+    <div class="t-stat">
+      <span class="val red">61</span>
+      <div class="lbl">Visitas orgánicas / mes</div>
+    </div>
+    <div class="t-stat">
+      <span class="val yellow">67</span>
+      <div class="lbl">Backlinks totales</div>
+    </div>
+    <div class="t-stat">
+      <span class="val yellow">12</span>
+      <div class="lbl">Dominios de referencia</div>
+    </div>
+    <div class="t-stat">
+      <span class="val red">0</span>
+      <div class="lbl">Tráfico de pago (Ads)</div>
+    </div>
+  </div>
+
+  <div class="traffic-table-wrap">
+    <h3>Páginas con más tráfico estimado</h3>
+    <table class="traffic-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Página</th>
+          <th>Visitas est./mes</th>
+          <th>Backlinks</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td>
+            <strong>¿Conoce los 10 principales usos de los aluminios?</strong>
+            <span class="url">lumisol.net/blog/conoce-los-10-principales-usos-de-los-aluminios-22.html</span>
+          </td>
+          <td><span class="visits-badge ok">41</span></td>
+          <td>0</td>
+          <td>Artículo de blog</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td>
+            <strong>Página de inicio</strong>
+            <span class="url">lumisol.net/</span>
+          </td>
+          <td><span class="visits-badge ok">11</span></td>
+          <td>67</td>
+          <td>Home</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td>
+            <strong>⚠️ Mosquiteras — página de PRUEBA</strong>
+            <span class="url">lumisol.net/productos/mosquiteras-prueba.html</span>
+          </td>
+          <td><span class="visits-badge">5</span></td>
+          <td>0</td>
+          <td style="color:var(--red);font-weight:700">Eliminar urgente</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td>
+            <strong>Toldos en Málaga</strong>
+            <span class="url">lumisol.net/productos/toldos.html</span>
+          </td>
+          <td><span class="visits-badge">2</span></td>
+          <td>0</td>
+          <td>Producto</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td>
+            <strong>Trabajos realizados</strong>
+            <span class="url">lumisol.net/trabajos-realizados.html</span>
+          </td>
+          <td><span class="visits-badge">2</span></td>
+          <td>0</td>
+          <td>Portfolio</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="keyword-warning">
+    <div class="icon">🔍</div>
+    <div>
+      <h4>No aparece en el top 30 de Google para ninguna keyword principal</h4>
+      <ul>
+        <li>"cortinas de cristal malaga"</li>
+        <li>"cerramientos terrazas malaga"</li>
+        <li>"cortinas de cristal marbella"</li>
+        <li>"pergolas malaga"</li>
+        <li>"techos de cristal malaga"</li>
+        <li>"aluminios malaga"</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="traffic-source">Datos extraídos mediante análisis automatizado con Playwright · Fuente: Ubersuggest + Bing Search · Junio 2026</p>
 </div>
 
 <footer>
