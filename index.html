@@ -1,1212 +1,838 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Auditoría Web — Lumisol.net | Junio 2026</title>
-  <style>
-    :root {
-      --primary: #1a1a2e;
-      --accent: #e94560;
-      --accent2: #0f3460;
-      --light: #f8f9fa;
-      --border: #e2e8f0;
-      --text: #2d3748;
-      --muted: #718096;
-      --green: #38a169;
-      --yellow: #d69e2e;
-      --red: #e53e3e;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Informe Definitivo — Lumisol.net · Junio 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:#1e293b;line-height:1.7}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+/* NAV */
+.nav{position:sticky;top:0;z-index:200;background:rgba(15,23,42,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08);display:flex;overflow-x:auto;gap:0}
+.nav a{padding:13px 18px;font-size:12px;font-weight:600;color:#94a3b8;white-space:nowrap;letter-spacing:.3px;transition:.15s;border-bottom:2px solid transparent;margin-bottom:-1px}
+.nav a:hover{color:#fff;border-bottom-color:#6366f1}
 
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: #f0f2f5;
-      color: var(--text);
-      line-height: 1.7;
-    }
+/* PORTADA */
+.cover{background:linear-gradient(160deg,#0f172a 0%,#1e1b4b 45%,#312e81 100%);color:#fff;padding:72px 40px 56px;text-align:center;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.cover-tag{display:inline-block;background:rgba(99,102,241,.25);border:1px solid rgba(99,102,241,.5);color:#a5b4fc;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:5px 18px;border-radius:20px;margin-bottom:22px;position:relative}
+.cover h1{font-size:clamp(28px,5vw,56px);font-weight:900;letter-spacing:-1px;margin-bottom:8px;position:relative}
+.cover h1 span{color:#818cf8}
+.cover .sub{color:#94a3b8;font-size:16px;margin-bottom:40px;position:relative}
+.cover-scores{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;position:relative}
+.cscore{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px 28px;text-align:center;min-width:140px}
+.cscore .val{font-size:48px;font-weight:900;line-height:1;display:block}
+.cscore .val.red{color:#f87171}
+.cscore .val.amber{color:#fbbf24}
+.cscore .lbl{font-size:12px;color:#94a3b8;margin-top:6px}
+.cscore .badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-top:6px}
+.badge-red{background:rgba(239,68,68,.2);color:#fca5a5}
+.badge-amber{background:rgba(251,191,36,.2);color:#fde68a}
 
-    /* COVER */
-    .cover {
-      background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 60%, #16213e 100%);
-      color: white;
-      padding: 80px 40px 60px;
-      text-align: center;
-    }
-    .cover .badge {
-      display: inline-block;
-      background: rgba(233,69,96,0.2);
-      border: 1px solid var(--accent);
-      color: #ff6b8a;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      padding: 6px 18px;
-      border-radius: 20px;
-      margin-bottom: 28px;
-    }
-    .cover h1 {
-      font-size: clamp(28px, 5vw, 52px);
-      font-weight: 800;
-      letter-spacing: -1px;
-      margin-bottom: 12px;
-    }
-    .cover h1 span { color: var(--accent); }
-    .cover p.subtitle {
-      font-size: 18px;
-      color: #a0aec0;
-      margin-bottom: 40px;
-    }
-    .cover .meta {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
-      margin-top: 40px;
-      padding-top: 40px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    .cover .meta-item { text-align: center; }
-    .cover .meta-item .val {
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--accent);
-      display: block;
-    }
-    .cover .meta-item .lbl {
-      font-size: 12px;
-      color: #a0aec0;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+/* WRAPPER */
+.w{max-width:960px;margin:0 auto;padding:36px 20px}
+.h2{font-size:21px;font-weight:800;color:#0f172a;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.h2::after{content:'';flex:1;height:2px;background:linear-gradient(90deg,#6366f1,transparent)}
 
-    /* LAYOUT */
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+/* ALERT BANNER */
+.alert{background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;padding:14px 18px;display:flex;gap:12px;margin-bottom:28px;font-size:14px;color:#92400e}
+.alert strong{color:#78350f}
 
-    /* EXECUTIVE SUMMARY */
-    .exec-summary {
-      background: white;
-      border-left: 5px solid var(--accent);
-      margin: 40px auto;
-      max-width: 960px;
-      padding: 36px 40px;
-      border-radius: 0 12px 12px 0;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    }
-    .exec-summary h2 {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
-    }
-    .exec-summary p {
-      font-size: 17px;
-      color: var(--text);
-      line-height: 1.8;
-    }
+/* EXEC CARDS */
+.exec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:32px}
+.exec{background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);border-top:4px solid}
+.exec.e1{border-color:#6366f1}.exec.e2{border-color:#ef4444}.exec.e3{border-color:#22c55e}
+.exec h3{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.exec.e1 h3{color:#6366f1}.exec.e2 h3{color:#ef4444}.exec.e3 h3{color:#22c55e}
+.exec p{font-size:14px;color:#475569;line-height:1.75}
 
-    /* SCORE TABLE */
-    .score-section {
-      max-width: 960px;
-      margin: 0 auto 40px;
-      padding: 0 20px;
-    }
-    .score-section h2 {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: var(--primary);
-    }
-    .score-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    .score-card {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .score-circle {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-    .score-circle.critico { background: #fff5f5; color: var(--red); border: 3px solid var(--red); }
-    .score-circle.mejorable { background: #fffbeb; color: var(--yellow); border: 3px solid var(--yellow); }
-    .score-circle.bien { background: #f0fff4; color: var(--green); border: 3px solid var(--green); }
-    .score-card .info .name { font-weight: 700; font-size: 15px; color: var(--primary); }
-    .score-card .info .tag {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 10px;
-      border-radius: 10px;
-      margin-top: 4px;
-    }
-    .tag.critico { background: #fff5f5; color: var(--red); }
-    .tag.mejorable { background: #fffbeb; color: var(--yellow); }
-    .tag.bien { background: #f0fff4; color: var(--green); }
-    .bar-wrap { margin-top: 8px; background: #edf2f7; border-radius: 4px; height: 6px; width: 100%; }
-    .bar { height: 6px; border-radius: 4px; }
-    .bar.critico { background: var(--red); }
-    .bar.mejorable { background: var(--yellow); }
-    .bar.bien { background: var(--green); }
+/* TRAFFIC BLOCK */
+.traffic-hero{background:linear-gradient(135deg,#1e293b,#7f1d1d);border-radius:16px;padding:32px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-bottom:20px}
+.traffic-hero .t-val{font-size:80px;font-weight:900;line-height:1;color:#f87171}
+.traffic-hero .t-val span{font-size:24px;opacity:.5}
+.traffic-hero .t-info .t-title{font-size:18px;font-weight:700;margin-bottom:6px}
+.traffic-hero .t-info .t-sub{font-size:13px;color:#94a3b8}
+.traffic-hero .t-note{background:rgba(255,255,255,.08);border-radius:10px;padding:14px 18px;font-size:13px;max-width:260px;line-height:1.6;border-left:3px solid #ef4444}
 
-    /* GLOBAL SCORE */
-    .global-score {
-      background: linear-gradient(135deg, var(--primary), var(--accent2));
-      color: white;
-      border-radius: 12px;
-      padding: 28px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .global-score .label { font-size: 18px; font-weight: 700; }
-    .global-score .label small { display: block; font-size: 13px; color: #a0aec0; font-weight: 400; margin-top: 2px; }
-    .global-score .num { font-size: 52px; font-weight: 900; color: var(--accent); }
+.t-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.tstat{background:#fff;border-radius:12px;padding:18px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.tstat .tv{font-size:34px;font-weight:900;display:block;line-height:1}
+.tstat .tv.red{color:#ef4444}.tstat .tv.amber{color:#d97706}.tstat .tv.green{color:#16a34a}
+.tstat .tl{font-size:12px;color:#64748b;margin-top:4px}
 
-    /* SECTIONS */
-    .section {
-      background: white;
-      border-radius: 16px;
-      margin: 0 auto 32px;
-      max-width: 960px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    }
-    .section-header {
-      padding: 28px 36px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .section-header .title-group { display: flex; align-items: center; gap: 16px; }
-    .section-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      flex-shrink: 0;
-    }
-    .section-header h2 { font-size: 20px; font-weight: 700; color: var(--primary); }
-    .section-header h2 small { display: block; font-size: 13px; color: var(--muted); font-weight: 400; }
-    .score-badge {
-      font-size: 28px;
-      font-weight: 900;
-      padding: 8px 20px;
-      border-radius: 10px;
-    }
-    .score-badge.critico { background: #fff5f5; color: var(--red); }
-    .score-badge.mejorable { background: #fffbeb; color: var(--yellow); }
-    .score-badge.bien { background: #f0fff4; color: var(--green); }
+.top-pages{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05);margin-bottom:16px}
+.top-pages h4{padding:14px 18px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;background:#f8fafc;border-bottom:1px solid #f1f5f9}
+.tp-table{width:100%;border-collapse:collapse;font-size:13px}
+.tp-table th{padding:10px 16px;text-align:left;background:#0f172a;color:rgba(255,255,255,.7);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.tp-table td{padding:12px 16px;border-bottom:1px solid #f1f5f9;color:#374151}
+.tp-table tr:last-child td{border-bottom:none}
+.tp-table tr:hover td{background:#f8fafc}
+.vbadge{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:8px}
+.vbadge.ok{background:#fffbeb;color:#d97706}
+.vbadge.lo{background:#fef2f2;color:#ef4444}
+.vbadge.warn{background:#fef2f2;color:#ef4444;border:1px solid #fca5a5}
 
-    .section-body { padding: 32px 36px; }
+/* SCORE TABLE */
+.score-global{background:linear-gradient(135deg,#0f172a,#1e1b4b);border-radius:14px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:16px}
+.sg-label{color:#e2e8f0;font-size:16px;font-weight:700}
+.sg-label small{display:block;font-size:12px;color:#64748b;font-weight:400;margin-top:3px}
+.sg-num{font-size:60px;font-weight:900;color:#f87171}
+.sg-num span{font-size:22px;color:#475569}
+.score-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px;margin-bottom:24px}
+.sc{background:#fff;border-radius:12px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,.05);display:flex;align-items:center;gap:16px}
+.sc-ring{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:900;flex-shrink:0}
+.sc-ring.red{background:#fef2f2;color:#ef4444;border:3px solid #fca5a5}
+.sc-ring.amber{background:#fffbeb;color:#d97706;border:3px solid #fde68a}
+.sc-ring.green{background:#f0fdf4;color:#16a34a;border:3px solid #86efac}
+.sc-info .sc-name{font-weight:700;font-size:14px;color:#1e293b}
+.sc-info .sc-cat{font-size:11px;color:#94a3b8;margin-bottom:5px}
+.sc-bar{background:#f1f5f9;border-radius:4px;height:5px;margin-top:6px}
+.sc-fill{height:5px;border-radius:4px}
+.fill-red{background:linear-gradient(90deg,#ef4444,#f97316)}
+.fill-amber{background:linear-gradient(90deg,#eab308,#f59e0b)}
+.fill-green{background:linear-gradient(90deg,#22c55e,#16a34a)}
 
-    /* PROBLEMS */
-    .problems h3 {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-    .problem-item {
-      display: flex;
-      gap: 14px;
-      margin-bottom: 20px;
-      padding: 16px;
-      background: #fff5f5;
-      border-radius: 10px;
-      border-left: 3px solid var(--red);
-    }
-    .problem-item .icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
-    .problem-item .text strong { display: block; font-size: 15px; color: var(--primary); margin-bottom: 4px; }
-    .problem-item .text p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+/* TOP 5 */
+.fix-list{display:flex;flex-direction:column;gap:14px}
+.fix{background:#fff;border-radius:14px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.06);display:flex;gap:18px;border-left:5px solid}
+.fix.crit{border-color:#ef4444}.fix.high{border-color:#f97316}.fix.med{border-color:#eab308}
+.fix-n{font-size:32px;font-weight:900;color:#e2e8f0;flex-shrink:0;width:38px;line-height:1}
+.fix-body .fix-title{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:4px}
+.fix-body .fix-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:8px;margin-bottom:8px}
+.tag-crit{background:#fef2f2;color:#ef4444}
+.tag-high{background:#fff7ed;color:#f97316}
+.tag-med{background:#fffbeb;color:#d97706}
+.fix-body p{font-size:14px;color:#475569;margin-bottom:8px}
+.fix-body .src{font-size:12px;color:#94a3b8;font-style:italic}
+.code{background:#0f172a;color:#86efac;border-radius:8px;padding:12px 16px;font-family:monospace;font-size:12px;overflow-x:auto;white-space:pre-wrap;margin-top:8px}
 
-    /* RECOMMENDATIONS */
-    .recs { margin-top: 28px; }
-    .recs h3 {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-    .rec-item {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 16px;
-      padding: 18px 20px;
-      background: var(--light);
-      border-radius: 10px;
-      border-left: 3px solid;
-      align-items: flex-start;
-    }
-    .rec-item.urgente { border-color: var(--red); }
-    .rec-item.importante { border-color: var(--yellow); }
-    .rec-item.futuro { border-color: var(--green); }
-    .rec-item .prio { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
-    .rec-item .rec-text strong { font-size: 15px; color: var(--primary); display: block; margin-bottom: 4px; }
-    .rec-item .rec-text p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+/* INCOHERENCES */
+.inc-list{display:flex;flex-direction:column;gap:12px}
+.inc{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.05);display:grid;grid-template-columns:36px 1fr auto;gap:14px;align-items:start}
+.inc.alta{border-left:4px solid #ef4444}
+.inc.media{border-left:4px solid #f97316}
+.inc-ico{font-size:22px;margin-top:2px}
+.inc-title{font-weight:700;font-size:15px;color:#0f172a;margin-bottom:3px}
+.inc-desc{font-size:13px;color:#64748b;margin-bottom:6px}
+.inc-fix{font-size:13px;color:#16a34a;font-weight:600}
+.prio{font-size:11px;font-weight:700;padding:3px 10px;border-radius:8px;white-space:nowrap}
+.prio.alta{background:#fef2f2;color:#ef4444}
+.prio.media{background:#fff7ed;color:#f97316}
 
-    /* TOP 5 */
-    .top5-section {
-      max-width: 960px;
-      margin: 0 auto 40px;
-      padding: 0 20px;
-    }
-    .top5-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: var(--primary); }
-    .top5-table {
-      width: 100%;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      border-collapse: collapse;
-    }
-    .top5-table thead tr { background: var(--primary); color: white; }
-    .top5-table thead th {
-      padding: 14px 20px;
-      text-align: left;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .top5-table tbody tr { border-bottom: 1px solid var(--border); }
-    .top5-table tbody tr:last-child { border-bottom: none; }
-    .top5-table tbody tr:hover { background: #f7fafc; }
-    .top5-table tbody td { padding: 16px 20px; font-size: 14px; color: var(--text); }
-    .top5-table .num-cell {
-      width: 40px;
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--accent);
-    }
-    .impact-badge, .diff-badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 8px;
-    }
-    .impact-badge.alto { background: #fff5f5; color: var(--red); }
-    .impact-badge.medio { background: #fffbeb; color: var(--yellow); }
-    .diff-badge.baja { background: #f0fff4; color: var(--green); }
-    .diff-badge.media { background: #fffbeb; color: var(--yellow); }
+/* JOURNEY */
+.journey-wrap{background:#fff;border-radius:14px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:20px;overflow-x:auto}
+.journey{display:flex;align-items:flex-start;gap:0;min-width:580px}
+.jstep{flex:1;text-align:center;position:relative;padding:0 8px}
+.jstep::after{content:'›';position:absolute;right:-6px;top:16px;font-size:24px;color:#cbd5e1;font-weight:900}
+.jstep:last-child::after{display:none}
+.jdot{width:42px;height:42px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.jdot.red{background:#fef2f2;border:2px solid #fca5a5}
+.jdot.amber{background:#fffbeb;border:2px solid #fde68a}
+.jdot.gray{background:#f1f5f9;border:2px dashed #cbd5e1}
+.jlabel{font-size:12px;font-weight:700;color:#1e293b;margin-bottom:2px}
+.jnote{font-size:11px;color:#ef4444;font-weight:600;line-height:1.3;margin-top:3px}
+.jstatus{font-size:11px;color:#64748b}
 
-    /* ROADMAP */
-    .roadmap {
-      max-width: 960px;
-      margin: 0 auto 60px;
-      padding: 0 20px;
-    }
-    .roadmap h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; color: var(--primary); }
-    .phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-    .phase {
-      background: white;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    }
-    .phase-header {
-      padding: 20px 24px;
-      color: white;
-      font-weight: 800;
-      font-size: 16px;
-    }
-    .phase-header small { display: block; font-size: 12px; font-weight: 400; opacity: 0.8; margin-top: 2px; }
-    .phase-header.f1 { background: linear-gradient(135deg, #e53e3e, #c53030); }
-    .phase-header.f2 { background: linear-gradient(135deg, #d69e2e, #b7791f); }
-    .phase-header.f3 { background: linear-gradient(135deg, #38a169, #276749); }
-    .phase-body { padding: 20px 24px; }
-    .phase-body ul { list-style: none; }
-    .phase-body ul li {
-      font-size: 14px;
-      color: var(--text);
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-    }
-    .phase-body ul li:last-child { border-bottom: none; }
-    .phase-body ul li::before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+/* CATEGORIES accordion */
+.cats{display:flex;flex-direction:column;gap:10px}
+.cat{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.cat-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;user-select:none;transition:.15s}
+.cat-hd:hover{background:#f8fafc}
+.cat-left{display:flex;align-items:center;gap:12px}
+.cat-ico{font-size:20px}
+.cat-name{font-weight:700;font-size:14px;color:#0f172a}
+.cat-sub{font-size:11px;color:#94a3b8}
+.cat-sc{font-size:20px;font-weight:900;padding:4px 14px;border-radius:8px}
+.sc-r{background:#fef2f2;color:#ef4444}
+.sc-a{background:#fffbeb;color:#d97706}
+.sc-g{background:#f0fdf4;color:#16a34a}
+.cat-bd{display:none;padding:16px 20px;border-top:1px solid #f1f5f9}
+.cat-bd.open{display:block}
+.cbar{background:#f1f5f9;border-radius:4px;height:7px;margin-bottom:14px}
+.cbar-fill{height:7px;border-radius:4px}
+.findings{display:flex;flex-direction:column;gap:7px}
+.fd{display:flex;gap:10px;padding:10px;border-radius:8px;font-size:13px;align-items:flex-start}
+.fd.e{background:#fef2f2;border-left:3px solid #ef4444}
+.fd.w{background:#fffbeb;border-left:3px solid #f59e0b}
+.fd.o{background:#f0fdf4;border-left:3px solid #22c55e}
+.fd .fi{flex-shrink:0;font-size:15px;margin-top:1px}
+.fd strong{display:block;color:#0f172a;font-weight:700;margin-bottom:1px}
+.fd span{color:#64748b}
 
-    /* TRAFFIC SECTION */
-    .traffic-section {
-      max-width: 960px;
-      margin: 0 auto 40px;
-      padding: 0 20px;
-    }
-    .traffic-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: var(--primary); }
+/* COPY TABLE */
+.copy-t{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.copy-t th{background:#0f172a;color:rgba(255,255,255,.7);padding:10px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.copy-t td{padding:13px 14px;border-bottom:1px solid #f1f5f9;vertical-align:top}
+.copy-t tr:last-child td{border-bottom:none}
+.copy-t .bad{color:#ef4444;font-size:12px}
+.copy-t .good{color:#16a34a;font-size:12px;font-weight:600}
+.copy-t .elem{font-weight:700;font-size:12px;color:#64748b}
 
-    .traffic-hero {
-      background: linear-gradient(135deg, #1a1a2e, #e53e3e);
-      border-radius: 14px;
-      padding: 32px;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 24px;
-      margin-bottom: 20px;
-    }
-    .traffic-hero .t-label { font-size: 16px; font-weight: 600; }
-    .traffic-hero .t-label small { display: block; font-size: 13px; opacity: 0.7; margin-top: 4px; font-weight: 400; }
-    .traffic-hero .t-num { font-size: 72px; font-weight: 900; line-height: 1; }
-    .traffic-hero .t-num span { font-size: 22px; opacity: 0.6; }
-    .traffic-hero .t-note {
-      background: rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 14px 20px;
-      font-size: 14px;
-      max-width: 280px;
-      line-height: 1.6;
-    }
-    .traffic-hero .t-note strong { display: block; margin-bottom: 4px; font-size: 15px; }
+/* DATA TABLE */
+.dt{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.dt th{background:#0f172a;color:rgba(255,255,255,.7);padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;text-align:left}
+.dt td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:#374151}
+.dt tr:last-child td{border-bottom:none}
+.dt tr:hover td{background:#f8fafc}
+.bl{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px}
+.bl.ok{background:#f0fdf4;color:#16a34a}
+.bl.er{background:#fef2f2;color:#ef4444}
+.bl.wn{background:#fffbeb;color:#d97706}
 
-    .traffic-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-    .t-stat {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    }
-    .t-stat .val {
-      font-size: 36px;
-      font-weight: 900;
-      display: block;
-      line-height: 1.1;
-    }
-    .t-stat .val.red { color: var(--red); }
-    .t-stat .val.yellow { color: var(--yellow); }
-    .t-stat .val.green { color: var(--green); }
-    .t-stat .lbl { font-size: 13px; color: var(--muted); margin-top: 4px; }
+/* PLAN */
+.plan-t{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.plan-t th{background:#1e1b4b;color:rgba(255,255,255,.8);padding:11px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;text-align:left}
+.plan-t td{padding:12px 14px;border-bottom:1px solid #f1f5f9;color:#374151}
+.plan-t tr:last-child td{border-bottom:none}
+.plan-t tr:hover td{background:#f8fafc}
+.pb{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px}
+.p1{background:#fef2f2;color:#ef4444}
+.p2{background:#fff7ed;color:#f97316}
+.p3{background:#fffbeb;color:#d97706}
+.p4{background:#f0fdf4;color:#16a34a}
+.ih{color:#ef4444;font-weight:700}.im{color:#d97706;font-weight:700}.il{color:#16a34a;font-weight:700}
 
-    .traffic-table-wrap {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-      margin-bottom: 20px;
-    }
-    .traffic-table-wrap h3 {
-      padding: 16px 24px;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
-      background: #f8f9fa;
-    }
-    .traffic-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .traffic-table thead tr { background: var(--primary); color: white; }
-    .traffic-table thead th {
-      padding: 12px 18px;
-      text-align: left;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .traffic-table tbody tr { border-bottom: 1px solid var(--border); }
-    .traffic-table tbody tr:last-child { border-bottom: none; }
-    .traffic-table tbody tr:hover { background: #f7fafc; }
-    .traffic-table tbody td { padding: 14px 18px; font-size: 14px; }
-    .traffic-table .url { font-size: 12px; color: var(--muted); display: block; margin-top: 2px; }
-    .visits-badge {
-      display: inline-block;
-      font-weight: 700;
-      font-size: 15px;
-      padding: 4px 12px;
-      border-radius: 8px;
-      background: #fff5f5;
-      color: var(--red);
-    }
-    .visits-badge.ok { background: #fffbeb; color: var(--yellow); }
+/* QW */
+.qw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.qw{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-top:3px solid #6366f1}
+.qw-n{font-size:36px;font-weight:900;color:#e0e7ff;line-height:1}
+.qw h4{font-weight:700;font-size:15px;color:#0f172a;margin:6px 0 4px}
+.qw p{font-size:13px;color:#64748b}
+.qw .qt{display:inline-block;background:#ede9fe;color:#6366f1;font-size:11px;font-weight:700;padding:2px 10px;border-radius:8px;margin-top:10px}
 
-    .keyword-warning {
-      background: #fff5f5;
-      border: 1px solid #fed7d7;
-      border-radius: 12px;
-      padding: 20px 24px;
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-    }
-    .keyword-warning .icon { font-size: 28px; flex-shrink: 0; }
-    .keyword-warning h4 { font-size: 16px; font-weight: 700; color: var(--red); margin-bottom: 8px; }
-    .keyword-warning ul { list-style: none; }
-    .keyword-warning ul li {
-      font-size: 14px;
-      color: var(--text);
-      padding: 4px 0;
-      display: flex;
-      gap: 8px;
-    }
-    .keyword-warning ul li::before { content: "✗"; color: var(--red); font-weight: 700; }
+footer{text-align:center;padding:40px 20px;color:#94a3b8;font-size:12px;border-top:2px solid #e2e8f0;margin-top:8px;background:#fff}
+footer strong{color:#475569}
 
-    .traffic-source { font-size: 12px; color: var(--muted); text-align: right; margin-top: 8px; }
-
-    /* FOOTER */
-    footer {
-      background: var(--primary);
-      color: #a0aec0;
-      text-align: center;
-      padding: 40px 20px;
-      font-size: 13px;
-    }
-    footer strong { color: white; }
-
-    /* DIVIDER */
-    .section-divider {
-      max-width: 960px;
-      margin: 8px auto 32px;
-      padding: 0 20px;
-      font-size: 13px;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .section-divider::before, .section-divider::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    @media (max-width: 600px) {
-      .cover { padding: 50px 20px 40px; }
-      .section-body, .section-header { padding: 20px; }
-      .exec-summary { padding: 24px 20px; margin: 20px 12px; }
-      .score-section, .top5-section, .roadmap { padding: 0 12px; }
-    }
-  </style>
+@media(max-width:640px){
+  .cover{padding:48px 20px 40px}
+  .w{padding:24px 14px}
+  .fix{flex-direction:column;gap:10px}
+  .inc{grid-template-columns:28px 1fr}
+  .inc .prio{display:none}
+}
+</style>
 </head>
 <body>
 
+<nav class="nav">
+  <a href="#resumen">Resumen</a>
+  <a href="#trafico">Tráfico Real</a>
+  <a href="#puntuaciones">Puntuaciones</a>
+  <a href="#correcciones">Top 5 Fixes</a>
+  <a href="#incoherencias">Incoherencias</a>
+  <a href="#journey">Customer Journey</a>
+  <a href="#seo">Análisis SEO</a>
+  <a href="#negocio">Análisis Negocio</a>
+  <a href="#copy">Copy</a>
+  <a href="#datos">Datos Técnicos</a>
+  <a href="#plan">Plan de Acción</a>
+  <a href="#quickwins">Quick Wins</a>
+</nav>
+
 <!-- PORTADA -->
 <div class="cover">
-  <div class="badge">Informe de Auditoría Web Profesional</div>
-  <h1>Auditoría <span>Lumisol</span>.net</h1>
-  <p class="subtitle">Diagnóstico completo · Diseño · SEO · Conversión · Arquitectura</p>
-  <div class="meta">
-    <div class="meta-item"><span class="val">6</span><span class="lbl">Dimensiones analizadas</span></div>
-    <div class="meta-item"><span class="val">4.3</span><span class="lbl">Puntuación media / 10</span></div>
-    <div class="meta-item"><span class="val">61</span><span class="lbl">Visitas orgánicas / mes</span></div>
-    <div class="meta-item"><span class="val">0</span><span class="lbl">Keywords en Google top 30</span></div>
+  <div class="cover-tag">Informe de Auditoría Digital Completo</div>
+  <h1>Lumisol <span>Mediterránea</span></h1>
+  <div class="sub">lumisol.net · Cerramientos y Cortinas de Cristal · Málaga · Junio 2026</div>
+  <div class="cover-scores">
+    <div class="cscore">
+      <span class="val red">46</span>
+      <div class="lbl">SEO Técnico</div>
+      <span class="badge badge-red">🔴 Crítico</span>
+    </div>
+    <div class="cscore">
+      <span class="val red">31</span>
+      <div class="lbl">Negocio Digital</div>
+      <span class="badge badge-red">🔴 Crítico</span>
+    </div>
+    <div class="cscore">
+      <span class="val red">38</span>
+      <div class="lbl">Puntuación Global</div>
+      <span class="badge badge-red">🔴 Requiere acción</span>
+    </div>
+    <div class="cscore">
+      <span class="val amber">61</span>
+      <div class="lbl">Visitas orgánicas/mes</div>
+      <span class="badge badge-amber">⚠️ Muy bajo</span>
+    </div>
   </div>
 </div>
 
 <!-- RESUMEN EJECUTIVO -->
-<div class="exec-summary">
-  <h2>Resumen Ejecutivo</h2>
-  <p>
-    Lumisol tiene una base sólida: 15 años de experiencia, fabricación propia, garantía de 10 años y presencia en Málaga y Marbella. Sin embargo, la web no refleja ese nivel de calidad ni genera la confianza necesaria para convertir visitantes en clientes. Los tres problemas principales son: <strong>ausencia total de prueba social</strong> (ningún testimonio ni reseña visible), <strong>posicionamiento SEO prácticamente congelado desde 2021</strong> (el sitio no ha crecido ni se ha actualizado), y <strong>un diseño que no transmite la profesionalidad del negocio</strong>. La buena noticia es que todos estos problemas tienen solución concreta y asequible, y las mejoras pueden generar resultados visibles en menos de 90 días.
-  </p>
+<div class="w" id="resumen">
+  <div class="h2">📋 Resumen Ejecutivo</div>
+  <div class="exec-grid">
+    <div class="exec e1">
+      <h3>Estado actual</h3>
+      <p>Lumisol lleva 15 años en el mercado con fabricación propia y garantía de 10 años — un negocio sólido con producto real. Sin embargo su presencia digital no refleja nada de eso: 61 visitas orgánicas al mes, 0 keywords en Google top 30 y 142 seguidores en Instagram. El negocio sobrevive por el boca a boca, no por captación digital.</p>
+    </div>
+    <div class="exec e2">
+      <h3>El problema principal</h3>
+      <p>La brecha entre la calidad real del negocio y su presencia digital es enorme. La web lleva sin actualizarse desde 2021, el blog está abandonado, no hay prueba social visible y la web no aparece en Google para ninguna de sus keywords clave. Un cliente que busca "cortinas de cristal Málaga" nunca encontrará Lumisol.</p>
+    </div>
+    <div class="exec e3">
+      <h3>La oportunidad</h3>
+      <p>Con los cambios correctos, Lumisol puede pasar de 61 visitas/mes a cientos en 3-6 meses. El sector cerramientos en Málaga tiene alta demanda y competidores que tampoco están bien posicionados. Activar el SEO local, añadir prueba social y mejorar el embudo de conversión puede convertir la web en la principal fuente de leads.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TRÁFICO REAL -->
+<div class="w" id="trafico">
+  <div class="h2">📊 Datos de Tráfico Real Verificados</div>
+  <div class="traffic-hero">
+    <div class="t-info">
+      <div class="t-title">Visitas orgánicas mensuales</div>
+      <div class="t-sub">Fuente: Ubersuggest vía Playwright · Junio 2026</div>
+    </div>
+    <div class="t-val">61<span>/mes</span></div>
+    <div class="t-note">Empresa con 15 años, fabricación propia y 67 backlinks recibe solo 61 visitas orgánicas al mes y no aparece en top 30 para ninguna keyword clave.</div>
+  </div>
+  <div class="t-stats">
+    <div class="tstat"><span class="tv red">0</span><div class="tl">Keywords en Google top 30</div></div>
+    <div class="tstat"><span class="tv red">61</span><div class="tl">Visitas orgánicas/mes</div></div>
+    <div class="tstat"><span class="tv amber">67</span><div class="tl">Backlinks totales</div></div>
+    <div class="tstat"><span class="tv amber">12</span><div class="tl">Dominios de referencia</div></div>
+    <div class="tstat"><span class="tv red">0</span><div class="tl">Visitas de pago (Ads)</div></div>
+    <div class="tstat"><span class="tv amber">23</span><div class="tl">Páginas indexadas</div></div>
+  </div>
+  <div class="top-pages">
+    <h4>Páginas con más tráfico estimado</h4>
+    <table class="tp-table">
+      <thead><tr><th>#</th><th>Página</th><th>Visitas/mes</th><th>Backlinks</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1</strong></td><td><strong>Blog: "10 usos de los aluminios"</strong><br/><small style="color:#94a3b8">lumisol.net/blog/conoce-los-10-principales-usos...</small></td><td><span class="vbadge ok">41</span></td><td>0</td><td>Blog</td></tr>
+        <tr><td><strong>2</strong></td><td><strong>Página de inicio</strong><br/><small style="color:#94a3b8">lumisol.net/</small></td><td><span class="vbadge ok">11</span></td><td>67</td><td>Home</td></tr>
+        <tr><td><strong>3</strong></td><td><strong style="color:#ef4444">⚠️ /mosquiteras-PRUEBA.html</strong><br/><small style="color:#94a3b8">Página de test — eliminar urgente</small></td><td><span class="vbadge lo">5</span></td><td>0</td><td style="color:#ef4444;font-weight:700">Eliminar</td></tr>
+        <tr><td><strong>4</strong></td><td><strong>Toldos en Málaga</strong><br/><small style="color:#94a3b8">lumisol.net/productos/toldos.html</small></td><td><span class="vbadge lo">2</span></td><td>0</td><td>Producto</td></tr>
+        <tr><td><strong>5</strong></td><td><strong>Trabajos realizados</strong><br/><small style="color:#94a3b8">lumisol.net/trabajos-realizados.html</small></td><td><span class="vbadge lo">2</span></td><td>0</td><td>Portfolio</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="background:#fef2f2;border-radius:10px;padding:14px 18px;font-size:13px;color:#991b1b;border-left:4px solid #ef4444">
+    <strong>No aparece en top 30 para ninguna keyword principal:</strong> "cortinas de cristal malaga" · "cerramientos terrazas malaga" · "cortinas de cristal marbella" · "pergolas malaga" · "techos de cristal malaga" · "aluminios malaga"
+  </div>
 </div>
 
 <!-- PUNTUACIONES -->
-<div class="score-section container">
-  <h2>Tabla de Puntuaciones</h2>
-  <div class="global-score">
-    <div class="label">Puntuación Global
-      <small>Media de las 6 dimensiones analizadas</small>
-    </div>
-    <div class="num">4.3<span style="font-size:22px;color:#a0aec0">/10</span></div>
+<div class="w" id="puntuaciones">
+  <div class="h2">🎯 Tabla de Puntuaciones</div>
+  <div class="score-global">
+    <div class="sg-label">Puntuación Global<small>Media ponderada de todas las dimensiones</small></div>
+    <div class="sg-num">38<span>/100</span></div>
   </div>
-  <div class="score-grid">
-    <div class="score-card">
-      <div class="score-circle mejorable">5</div>
-      <div class="info" style="flex:1">
-        <div class="name">Diseño Visual & Marca</div>
-        <span class="tag mejorable">Mejorable</span>
-        <div class="bar-wrap"><div class="bar mejorable" style="width:50%"></div></div>
+  <div class="score-cards">
+    <div class="sc"><div class="sc-ring red">46</div><div class="sc-info"><div class="sc-cat">SEO</div><div class="sc-name">SEO Técnico Global</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:46%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring red">40</div><div class="sc-info"><div class="sc-cat">SEO</div><div class="sc-name">Meta Tags</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:40%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring red">38</div><div class="sc-info"><div class="sc-cat">SEO</div><div class="sc-name">Indexación y Canonical</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:38%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring amber">62</div><div class="sc-info"><div class="sc-cat">SEO</div><div class="sc-name">Headings y Estructura</div><div class="sc-bar"><div class="sc-fill fill-amber" style="width:62%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring amber">52</div><div class="sc-info"><div class="sc-cat">SEO</div><div class="sc-name">Técnico y Velocidad</div><div class="sc-bar"><div class="sc-fill fill-amber" style="width:52%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring red">42</div><div class="sc-info"><div class="sc-cat">SEO</div><div class="sc-name">Contenido y E-E-A-T</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:42%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring red">28</div><div class="sc-info"><div class="sc-cat">SEO</div><div class="sc-name">Imágenes</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:28%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring amber">72</div><div class="sc-info"><div class="sc-cat">SEO</div><div class="sc-name">Enlaces Internos</div><div class="sc-bar"><div class="sc-fill fill-amber" style="width:72%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring red">32</div><div class="sc-info"><div class="sc-cat">SEO</div><div class="sc-name">Schema y Open Graph</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:32%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring red">35</div><div class="sc-info"><div class="sc-cat">Negocio</div><div class="sc-name">Web y UX</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:35%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring red">22</div><div class="sc-info"><div class="sc-cat">Negocio</div><div class="sc-name">Redes Sociales</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:22%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring red">5</div><div class="sc-info"><div class="sc-cat">Negocio</div><div class="sc-name">Publicidad (Ads)</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:5%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring red">38</div><div class="sc-info"><div class="sc-cat">Negocio</div><div class="sc-name">Copy y Comunicación</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:38%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring amber">45</div><div class="sc-info"><div class="sc-cat">Negocio</div><div class="sc-name">Oferta y Precios</div><div class="sc-bar"><div class="sc-fill fill-amber" style="width:45%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring red">25</div><div class="sc-info"><div class="sc-cat">Negocio</div><div class="sc-name">Customer Journey</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:25%"></div></div></div></div>
+    <div class="sc"><div class="sc-ring red">15</div><div class="sc-info"><div class="sc-cat">Negocio</div><div class="sc-name">Contenido / Blog</div><div class="sc-bar"><div class="sc-fill fill-red" style="width:15%"></div></div></div></div>
+  </div>
+</div>
+
+<!-- TOP 5 CORRECCIONES -->
+<div class="w" id="correcciones">
+  <div class="h2">🚨 Top 5 Correcciones Prioritarias</div>
+  <div class="fix-list">
+
+    <div class="fix crit">
+      <div class="fix-n">1</div>
+      <div class="fix-body">
+        <div class="fix-title">Etiqueta canonical ausente en todas las páginas</div>
+        <span class="fix-tag tag-crit">CRÍTICO · SEO</span>
+        <p>Google no sabe cuál es la URL canónica del sitio. Sin canonical, variaciones de URL (con/sin www, con parámetros, trailing slash) se tratan como contenido duplicado y dividen la autoridad SEO.</p>
+        <div class="code">&lt;link rel="canonical" href="https://www.lumisol.net/RUTA-DE-PAGINA.html" /&gt;</div>
+        <div class="src">Verificado con Playwright · document.querySelector('link[rel="canonical"]') devuelve null</div>
       </div>
     </div>
-    <div class="score-card">
-      <div class="score-circle critico">4</div>
-      <div class="info" style="flex:1">
-        <div class="name">UX/UI & Experiencia de Usuario</div>
-        <span class="tag critico">Crítico</span>
-        <div class="bar-wrap"><div class="bar critico" style="width:40%"></div></div>
+
+    <div class="fix crit">
+      <div class="fix-n">2</div>
+      <div class="fix-body">
+        <div class="fix-title">Sin atributo lang="es" en la etiqueta &lt;html&gt;</div>
+        <span class="fix-tag tag-crit">CRÍTICO · SEO</span>
+        <p>Google no puede determinar el idioma con certeza. Afecta al posicionamiento en búsquedas en español y a la inclusión en resultados locales de España.</p>
+        <div class="code">&lt;html lang="es"&gt;  &lt;!-- Cambiar desde &lt;html&gt; sin atributo --&gt;</div>
+        <div class="src">Verificado con Playwright · document.documentElement.lang devuelve cadena vacía</div>
       </div>
     </div>
-    <div class="score-card">
-      <div class="score-circle critico">4</div>
-      <div class="info" style="flex:1">
-        <div class="name">SEO Técnico</div>
-        <span class="tag critico">Crítico</span>
-        <div class="bar-wrap"><div class="bar critico" style="width:40%"></div></div>
+
+    <div class="fix crit">
+      <div class="fix-n">3</div>
+      <div class="fix-body">
+        <div class="fix-title">Open Graph completamente ausente — cero visibilidad al compartir en redes</div>
+        <span class="fix-tag tag-crit">CRÍTICO · SEO + Negocio</span>
+        <p>Al compartir un enlace de lumisol.net en WhatsApp, Facebook o LinkedIn no aparece imagen, título ni descripción — solo texto plano. Destruye el CTR de cualquier campaña orgánica en redes sociales.</p>
+        <div class="code">&lt;meta property="og:title" content="Cortinas de Cristal y Cerramientos en Málaga | Lumisol" /&gt;
+&lt;meta property="og:description" content="Especialistas desde 2007. Fabricación propia y 10 años de garantía." /&gt;
+&lt;meta property="og:image" content="https://www.lumisol.net/images/og-lumisol.jpg" /&gt;
+&lt;meta property="og:url" content="https://www.lumisol.net/" /&gt;
+&lt;meta property="og:type" content="website" /&gt;</div>
+        <div class="src">Verificado con Playwright · Ninguna meta property="og:*" detectada</div>
       </div>
     </div>
-    <div class="score-card">
-      <div class="score-circle mejorable">5</div>
-      <div class="info" style="flex:1">
-        <div class="name">SEO On-Page & Contenido</div>
-        <span class="tag mejorable">Mejorable</span>
-        <div class="bar-wrap"><div class="bar mejorable" style="width:50%"></div></div>
+
+    <div class="fix high">
+      <div class="fix-n">4</div>
+      <div class="fix-body">
+        <div class="fix-title">10 de 23 imágenes sin alt text y 0 imágenes en formato WebP</div>
+        <span class="fix-tag tag-high">ALTO · SEO + Velocidad</span>
+        <p>Las 23 imágenes del sitio están en JPG/PNG legacy, sin formato WebP. Además, 10 de ellas (43%) no tienen descripción alternativa, perdiendo tráfico de búsqueda de imágenes y penalizando accesibilidad.</p>
+        <div class="code">&lt;!-- Formato correcto --&gt;
+&lt;img src="cortinas-cristal-terraza-malaga.webp"
+     alt="Cortinas de cristal instaladas en terraza de restaurante en Málaga"
+     loading="lazy" width="800" height="600" /&gt;</div>
+        <div class="src">Verificado con Playwright · 23 imágenes totales, 10 sin alt, 0 WebP</div>
       </div>
     </div>
-    <div class="score-card">
-      <div class="score-circle critico">3</div>
-      <div class="info" style="flex:1">
-        <div class="name">Conversión & Captación de Leads</div>
-        <span class="tag critico">Crítico</span>
-        <div class="bar-wrap"><div class="bar critico" style="width:30%"></div></div>
+
+    <div class="fix high">
+      <div class="fix-n">5</div>
+      <div class="fix-body">
+        <div class="fix-title">Schema LocalBusiness existe pero incompleto — faltan campos para rich snippets</div>
+        <span class="fix-tag tag-high">ALTO · SEO</span>
+        <p>El schema existe (LocalBusiness con dirección, teléfono y coordenadas) pero le faltan openingHours, aggregateRating, description y sameAs. Sin aggregateRating Google no puede mostrar estrellas en los resultados de búsqueda.</p>
+        <div class="code">// Añadir a los campos existentes del schema:
+"openingHours": ["Mo-Fr 09:00-18:00", "Sa 09:00-14:00"],
+"description": "Especialistas en cortinas de cristal y cerramientos para terrazas en Málaga desde 2007.",
+"sameAs": [
+  "https://www.instagram.com/lumisolmediterranea/",
+  "https://www.facebook.com/LumisolMediterranea"
+]</div>
+        <div class="src">Verificado con Playwright · Schema encontrado vía document.querySelectorAll('script[type="application/ld+json"]')</div>
       </div>
     </div>
-    <div class="score-card">
-      <div class="score-circle mejorable">5</div>
-      <div class="info" style="flex:1">
-        <div class="name">Arquitectura & Estructura Web</div>
-        <span class="tag mejorable">Mejorable</span>
-        <div class="bar-wrap"><div class="bar mejorable" style="width:50%"></div></div>
+
+  </div>
+</div>
+
+<!-- INCOHERENCIAS -->
+<div class="w" id="incoherencias">
+  <div class="h2">⚡ Incoherencias de Negocio Detectadas</div>
+  <div class="inc-list">
+    <div class="inc alta">
+      <div class="inc-ico">🏆</div>
+      <div>
+        <div class="inc-title">15 años de experiencia vs presencia digital de negocio nuevo</div>
+        <div class="inc-desc">Fabricación propia, garantía de 10 años, presencia desde 2007 — pero la web parece abandonada desde 2021, tiene 142 seguidores en Instagram y recibe 61 visitas/mes. El cliente potencial no percibe ninguna de estas ventajas en digital.</div>
+        <div class="inc-fix">→ Fix: Convertir los 15 años y la fabricación propia en el eje de toda la comunicación digital.</div>
       </div>
+      <span class="prio alta">Alta</span>
+    </div>
+    <div class="inc alta">
+      <div class="inc-ico">💸</div>
+      <div>
+        <div class="inc-title">CTA de guerra de precios vs posicionamiento de calidad</div>
+        <div class="inc-desc">"¡MEJORAMOS CUALQUIER PRESUPUESTO!" comunica posicionamiento low-cost. Pero el negocio tiene fabricación propia, 10 años de garantía y financiación. Eso es posicionamiento premium — el mensaje contradice la propuesta real de valor.</div>
+        <div class="inc-fix">→ Fix: Cambiar a "Solicita tu presupuesto personalizado — Fabricación propia con 10 años de garantía".</div>
+      </div>
+      <span class="prio alta">Alta</span>
+    </div>
+    <div class="inc alta">
+      <div class="inc-ico">💬</div>
+      <div>
+        <div class="inc-title">Empresa local de reformas sin botón de WhatsApp</div>
+        <div class="inc-desc">En España, el 70%+ de los clientes del sector reformas prefiere contactar por WhatsApp. La web solo tiene formulario básico y 3 teléfonos sin contexto. Es la fuga de leads más fácil de tapar.</div>
+        <div class="inc-fix">→ Fix: Añadir botón fijo de WhatsApp con mensaje predefinido: "Hola, me interesa un presupuesto para [producto]".</div>
+      </div>
+      <span class="prio alta">Alta</span>
+    </div>
+    <div class="inc alta">
+      <div class="inc-ico">⭐</div>
+      <div>
+        <div class="inc-title">15 años de proyectos realizados y cero testimonios visibles</div>
+        <div class="inc-desc">La web tiene galería de "Últimos Proyectos" pero ningún proyecto tiene nombre de cliente, valoración ni historia. En un sector con inversiones de 3.000-15.000€, la ausencia de prueba social es el principal freno a la conversión.</div>
+        <div class="inc-fix">→ Fix: Solicitar a 10 clientes recientes una frase + foto del resultado. Publicar en carrusel en la home.</div>
+      </div>
+      <span class="prio alta">Alta</span>
+    </div>
+    <div class="inc media">
+      <div class="inc-ico">📝</div>
+      <div>
+        <div class="inc-title">Blog con contenido emocional en lugar de contenido SEO</div>
+        <div class="inc-desc">"Ser más feliz con Lumisol", "UN GRACIAS SINCERO Y ENORME" — ninguno responde búsquedas reales. El único artículo con tráfico (41 visitas) es técnico: "10 usos de los aluminios". El patrón es claro: el contenido útil funciona, el emocional no.</div>
+        <div class="inc-fix">→ Fix: Publicar 1 artículo/mes respondiendo preguntas reales: "¿Cuánto cuesta una cortina de cristal en Málaga?"</div>
+      </div>
+      <span class="prio media">Media</span>
+    </div>
+    <div class="inc media">
+      <div class="inc-ico">📞</div>
+      <div>
+        <div class="inc-title">3 números de teléfono sin contexto generan confusión</div>
+        <div class="inc-desc">La web muestra 951 100 603 / 622 224 223 / 952 038 364 sin explicar cuál usar. En un sector donde la llamada es el primer paso de conversión, la confusión al contactar mata leads directamente.</div>
+        <div class="inc-fix">→ Fix: Destacar un solo número principal. Los demás en la página de contacto con etiqueta ("oficina", "móvil").</div>
+      </div>
+      <span class="prio media">Media</span>
     </div>
   </div>
 </div>
 
-<div class="section-divider">Análisis detallado por dimensión</div>
-
-<!-- SECCIÓN 1: DISEÑO VISUAL -->
-<div class="section container">
-  <div class="section-header">
-    <div class="title-group">
-      <div class="section-icon" style="background:#fff5f5">🎨</div>
-      <h2>Diseño Visual & Identidad de Marca<small>Coherencia visual · Imágenes · Primera impresión</small></h2>
+<!-- CUSTOMER JOURNEY -->
+<div class="w" id="journey">
+  <div class="h2">🗺️ Customer Journey Completo</div>
+  <div class="journey-wrap">
+    <div class="journey">
+      <div class="jstep">
+        <div class="jdot red">🔍</div>
+        <div class="jlabel">Descubrimiento</div>
+        <div class="jstatus">Google / Redes</div>
+        <div class="jnote">0 keywords. 142 seguidores. Invisible en digital.</div>
+      </div>
+      <div class="jstep">
+        <div class="jdot red">👁️</div>
+        <div class="jlabel">Primera visita</div>
+        <div class="jstatus">Web / Home</div>
+        <div class="jnote">Diseño 2021. CTA genérico. Sin propuesta clara en 5s.</div>
+      </div>
+      <div class="jstep">
+        <div class="jdot red">🔎</div>
+        <div class="jlabel">Investigación</div>
+        <div class="jstatus">Precio / Reviews</div>
+        <div class="jnote">Sin precios. Sin testimonios. 3 teléfonos confusos.</div>
+      </div>
+      <div class="jstep">
+        <div class="jdot amber">📞</div>
+        <div class="jlabel">Contacto</div>
+        <div class="jstatus">Formulario / Telf</div>
+        <div class="jnote">Sin WhatsApp. Formulario sin campos claros.</div>
+      </div>
+      <div class="jstep">
+        <div class="jdot gray">🛠️</div>
+        <div class="jlabel">Post-venta</div>
+        <div class="jstatus">No existe</div>
+        <div class="jnote">Sin seguimiento ni solicitud de reseña.</div>
+      </div>
+      <div class="jstep">
+        <div class="jdot gray">🔁</div>
+        <div class="jlabel">Retención</div>
+        <div class="jstatus">No existe</div>
+        <div class="jnote">Sin newsletter ni programa de referidos.</div>
+      </div>
     </div>
-    <div class="score-badge mejorable">5/10</div>
   </div>
-  <div class="section-body">
-    <div class="problems">
-      <h3>Problemas críticos detectados</h3>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Diseño visualmente envejecido</strong>
-          <p>El sitio no ha recibido actualización de contenido desde octubre de 2021 (confirmado en el sitemap). El aspecto general corresponde a un sitio de hace 5+ años, lo que genera desconfianza frente a competidores con webs modernas.</p>
-        </div>
-      </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Sin coherencia visual de marca fuerte</strong>
-          <p>No hay un sistema de diseño definido: sin paleta de colores corporativa coherente, sin tipografías premium, sin espaciado consistente. La web parece construida con plantilla genérica sin personalización de marca.</p>
-        </div>
-      </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Imágenes de proyectos sin criterio editorial</strong>
-          <p>De las 14 imágenes analizadas, 8 carecen de alt text y la galería no tiene presentación visual cuidada. Sin antes/después, sin categorización por tipo de producto ni descripción de cada proyecto.</p>
-        </div>
-      </div>
-    </div>
-    <div class="recs">
-      <h3>Recomendaciones accionables</h3>
-      <div class="rec-item urgente">
-        <div class="prio">🔴</div>
-        <div class="rec-text">
-          <strong>Rediseño del hero section (primera pantalla)</strong>
-          <p>Sustituir el hero actual por una imagen de alta calidad a pantalla completa de un proyecto de terraza con cortinas de cristal, con titular claro y CTA contrastado. Herramienta: Canva Pro o Figma para mockup previo.</p>
-        </div>
-      </div>
-      <div class="rec-item urgente">
-        <div class="prio">🔴</div>
-        <div class="rec-text">
-          <strong>Crear una identidad visual coherente</strong>
-          <p>Definir paleta de 3 colores (primario, secundario, acento), 2 tipografías (títulos y cuerpo) y aplicarla consistentemente en toda la web. Usar Adobe Color para extraer la paleta del logo actual.</p>
-        </div>
-      </div>
-      <div class="rec-item importante">
-        <div class="prio">🟡</div>
-        <div class="rec-text">
-          <strong>Galería de proyectos con fotos profesionales</strong>
-          <p>Fotografiar 10-15 instalaciones terminadas y presentarlas en formato grid con filtros por tipo (terrazas, restaurantes, locales). Plugin recomendado: Modula Gallery para WordPress.</p>
-        </div>
-      </div>
-    </div>
+  <div style="background:#fef2f2;border-radius:10px;padding:14px 18px;border-left:4px solid #ef4444;font-size:14px;color:#991b1b">
+    <strong>Conclusión:</strong> El mayor problema no es la conversión — es el descubrimiento. Si nadie llega a la web, nada más importa. Prioridad absoluta: arreglar el SEO para existir en Google.
   </div>
 </div>
 
-<!-- SECCIÓN 2: UX/UI -->
-<div class="section container">
-  <div class="section-header">
-    <div class="title-group">
-      <div class="section-icon" style="background:#ebf8ff">🖥️</div>
-      <h2>UX/UI & Experiencia de Usuario<small>Propuesta de valor · Navegación · CTAs · Mobile</small></h2>
-    </div>
-    <div class="score-badge critico">4/10</div>
-  </div>
-  <div class="section-body">
-    <div class="problems">
-      <h3>Problemas críticos detectados</h3>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Menú de navegación colapsado con 13 subcategorías</strong>
-          <p>El submenú de "Productos" tiene 13 ítems en cascada, lo que genera confusión y pérdida de orientación, especialmente en móvil. La navegación actual exige al usuario saber de antemano qué busca.</p>
-        </div>
+<!-- ANÁLISIS SEO -->
+<div class="w" id="seo">
+  <div class="h2">⚙️ Análisis SEO Técnico por Categoría</div>
+  <div class="cats">
+
+    <div class="cat">
+      <div class="cat-hd" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="cat-left"><span class="cat-ico">🏷️</span><div><div class="cat-name">Meta Tags</div><div class="cat-sub">Title · Description · Canonical · OG · Lang</div></div></div>
+        <span class="cat-sc sc-r">40/100</span>
       </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Propuesta de valor ambigua en los primeros 5 segundos</strong>
-          <p>El H1 describe qué hacen, pero no responde "¿Por qué contratarte a ti y no a la competencia?". No hay diferenciador claro en el header. El usuario no sabe en 5 segundos por qué Lumisol es mejor.</p>
-        </div>
-      </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>CTAs débiles que compiten por precio, no por valor</strong>
-          <p>El CTA principal "¡MEJORAMOS CUALQUIER PRESUPUESTO!" posiciona al negocio como el más barato. Además hay 3 números de teléfono sin explicar para qué sirve cada uno, generando confusión.</p>
+      <div class="cat-bd">
+        <div class="cbar"><div class="cbar-fill fill-red" style="width:40%"></div></div>
+        <div class="findings">
+          <div class="fd e"><div class="fi">❌</div><div><strong>Canonical ausente</strong><span>Riesgo de contenido duplicado en todas las páginas. Verificado con Playwright.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>HTML lang no definido</strong><span>document.documentElement.lang devuelve cadena vacía. Google no determina el idioma.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>Open Graph completamente ausente</strong><span>Sin og:title, og:description ni og:image. Los compartidos en redes no tienen preview.</span></div></div>
+          <div class="fd w"><div class="fi">⚠️</div><div><strong>Title 66 caracteres (límite: 60)</strong><span>"▷ Cerramientos para Terrazas y Cortinas de Cristal Málaga ⇒Lumisol" — se trunca en Google.</span></div></div>
+          <div class="fd w"><div class="fi">⚠️</div><div><strong>Description 176 caracteres (límite: 160)</strong><span>Los últimos 16 caracteres no se ven en los resultados de búsqueda.</span></div></div>
+          <div class="fd o"><div class="fi">✅</div><div><strong>Meta description existe con keywords</strong><span>Contiene keywords relevantes y CTA. Base sólida para mejorar.</span></div></div>
+          <div class="fd o"><div class="fi">✅</div><div><strong>Viewport definido</strong><span>width=device-width presente. Falta añadir initial-scale=1.</span></div></div>
         </div>
       </div>
     </div>
-    <div class="recs">
-      <h3>Recomendaciones accionables</h3>
-      <div class="rec-item urgente">
-        <div class="prio">🔴</div>
-        <div class="rec-text">
-          <strong>Redefinir el CTA principal</strong>
-          <p>Cambiar "¡Mejoramos cualquier presupuesto!" por <em>"Solicita tu presupuesto gratuito en 24h"</em> con botón destacado en color contrastado. Comunica rapidez y gratuidad sin entrar en guerra de precios.</p>
-        </div>
+
+    <div class="cat">
+      <div class="cat-hd" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="cat-left"><span class="cat-ico">🔍</span><div><div class="cat-name">Indexación y Canonicalización</div><div class="cat-sub">Sitemap · robots.txt · URLs · Duplicados</div></div></div>
+        <span class="cat-sc sc-r">38/100</span>
       </div>
-      <div class="rec-item urgente">
-        <div class="prio">🔴</div>
-        <div class="rec-text">
-          <strong>Simplificar el menú a 5-6 ítems máximo</strong>
-          <p>Agrupar los 13 productos en 4 categorías: Cerramientos, Protección Solar, Persianas & Mamparas, Aluminios & PVC. Añadir "Presupuesto" como ítem visualmente destacado en el menú.</p>
-        </div>
-      </div>
-      <div class="rec-item importante">
-        <div class="prio">🟡</div>
-        <div class="rec-text">
-          <strong>Añadir propuesta de valor en el hero</strong>
-          <p>Ejemplo: <em>"Especialistas en cerramientos de terrazas en Málaga desde 2007. Fabricación propia, instalación en X semanas y 10 años de garantía."</em> Responde al quién, al qué y al por qué en 2 líneas.</p>
+      <div class="cat-bd">
+        <div class="cbar"><div class="cbar-fill fill-red" style="width:38%"></div></div>
+        <div class="findings">
+          <div class="fd e"><div class="fi">❌</div><div><strong>Sin canonical en ninguna página</strong><span>Verificado en home y 10 páginas internas vía Playwright.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>Página de prueba indexada: /mosquiteras-prueba.html</strong><span>Incluida en sitemap y accesible públicamente. Recibe 5 visitas/mes desperdiciadas.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>Sitemap sin actualizar desde octubre 2021</strong><span>23 URLs con lastmod 2021-10-05. Google lo interpreta como sitio inactivo.</span></div></div>
+          <div class="fd o"><div class="fi">✅</div><div><strong>robots.txt correcto y con referencia al sitemap</strong><span>Bloquea /galeria, /component y /old/ sin afectar a páginas de producto.</span></div></div>
+          <div class="fd o"><div class="fi">✅</div><div><strong>HTTPS activo sin mixed content</strong><span>0 recursos HTTP detectados en página HTTPS. Protocolo seguro verificado.</span></div></div>
         </div>
       </div>
     </div>
+
+    <div class="cat">
+      <div class="cat-hd" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="cat-left"><span class="cat-ico">📋</span><div><div class="cat-name">Headings y Estructura</div><div class="cat-sub">H1 · Jerarquía · Semántica</div></div></div>
+        <span class="cat-sc sc-a">62/100</span>
+      </div>
+      <div class="cat-bd">
+        <div class="cbar"><div class="cbar-fill fill-amber" style="width:62%"></div></div>
+        <div class="findings">
+          <div class="fd o"><div class="fi">✅</div><div><strong>Un único H1 con keyword principal</strong><span>"Cortinas de Cristal en Málaga y Cerramientos para terrazas" — correcto.</span></div></div>
+          <div class="fd o"><div class="fi">✅</div><div><strong>Jerarquía H1→H2→H3 sin saltos</strong><span>Estructura semántica coherente en la home y páginas de producto.</span></div></div>
+          <div class="fd w"><div class="fi">⚠️</div><div><strong>CTA de precio como H4</strong><span>"¡ MEJORAMOS CUALQUIER PRESUPUESTO !" está en H4. Los headings son para estructura, no marketing.</span></div></div>
+          <div class="fd w"><div class="fi">⚠️</div><div><strong>Títulos de blog como H4 en la home</strong><span>"Ser más feliz con Lumisol", "UN GRACIAS SINCERO Y ENORME" — sin valor SEO en home.</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cat-hd" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="cat-left"><span class="cat-ico">🖼️</span><div><div class="cat-name">Imágenes</div><div class="cat-sub">Alt texts · Formato WebP · Nombres de archivo</div></div></div>
+        <span class="cat-sc sc-r">28/100</span>
+      </div>
+      <div class="cat-bd">
+        <div class="cbar"><div class="cbar-fill fill-red" style="width:28%"></div></div>
+        <div class="findings">
+          <div class="fd e"><div class="fi">❌</div><div><strong>10 de 23 imágenes sin alt text (43%)</strong><span>nueva_21.jpg, nueva_42.jpg, nueva_2261.jpg y 7 más sin descripción. Dato verificado con Playwright (no 8/14 como estimó WebFetch).</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>0 imágenes en WebP o AVIF</strong><span>Las 23 imágenes están en JPG/PNG legacy. Impacto directo en LCP y Core Web Vitals.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>Nombres de archivo no descriptivos</strong><span>"nueva_21.jpg", "curso_247.jpg" — Google no puede inferir contexto del nombre.</span></div></div>
+          <div class="fd o"><div class="fi">✅</div><div><strong>13 imágenes sí tienen alt text</strong><span>Logo y páginas de producto con alt descriptivo y keyword local.</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cat-hd" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="cat-left"><span class="cat-ico">🌐</span><div><div class="cat-name">Schema y Open Graph</div><div class="cat-sub">LocalBusiness · OG · Twitter Cards · FAQ</div></div></div>
+        <span class="cat-sc sc-r">32/100</span>
+      </div>
+      <div class="cat-bd">
+        <div class="cbar"><div class="cbar-fill fill-red" style="width:32%"></div></div>
+        <div class="findings">
+          <div class="fd w"><div class="fi">⚠️</div><div><strong>Schema LocalBusiness existe pero incompleto</strong><span>Tiene: name, address, telephone, geo, priceRange. Falta: openingHours, description, aggregateRating, sameAs. Verificado con Playwright.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>Open Graph completamente ausente</strong><span>Sin og:title, og:description ni og:image en ninguna página.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>Sin Twitter/X Cards</strong><span>No se detectaron meta twitter:card ni twitter:image.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>Sin schema FAQPage en páginas de producto</strong><span>Oportunidad directa de featured snippets para preguntas clave del sector.</span></div></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- SECCIÓN 3: SEO TÉCNICO -->
-<div class="section container">
-  <div class="section-header">
-    <div class="title-group">
-      <div class="section-icon" style="background:#fff5f5">⚙️</div>
-      <h2>SEO Técnico<small>Velocidad · Sitemap · Schema · Imágenes · URLs</small></h2>
-    </div>
-    <div class="score-badge critico">4/10</div>
-  </div>
-  <div class="section-body">
-    <div class="problems">
-      <h3>Problemas críticos detectados</h3>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Sitemap desactualizado desde octubre 2021</strong>
-          <p>Todas las 23 URLs del sitemap indican lastmod: 2021-10-05. Google interpreta esto como un sitio inactivo. En un sector competitivo como cerramientos en Málaga, esta señal penaliza el rastreo e indexación.</p>
-        </div>
+<!-- ANÁLISIS NEGOCIO -->
+<div class="w" id="negocio">
+  <div class="h2">💼 Análisis de Negocio por Área</div>
+  <div class="cats">
+
+    <div class="cat">
+      <div class="cat-hd" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="cat-left"><span class="cat-ico">🌐</span><div><div class="cat-name">Web y UX</div><div class="cat-sub">Diseño · CTAs · Confianza · Mobile</div></div></div>
+        <span class="cat-sc sc-r">35/100</span>
       </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>8 de 14 imágenes en la home sin alt text</strong>
-          <p>Las imágenes de la galería "Últimos Proyectos" no tienen descripción alternativa. Supone pérdida de tráfico orgánico de búsqueda de imágenes y penalización de accesibilidad (WCAG).</p>
-        </div>
-      </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Sin schema markup ni datos estructurados + página "prueba" indexada</strong>
-          <p>No existe LocalBusiness schema, FAQPage, Review ni ServiceSchema. Esto impide rich snippets en Google, reduciendo el CTR orgánico hasta un 30%. Además, /mosquiteras-prueba.html está indexada públicamente en el sitemap.</p>
+      <div class="cat-bd">
+        <div class="cbar"><div class="cbar-fill fill-red" style="width:35%"></div></div>
+        <div class="findings">
+          <div class="fd e"><div class="fi">❌</div><div><strong>Sin testimonios ni prueba social</strong><span>Cero reseñas, testimonios o casos de éxito con nombre real. Freno principal a la conversión en sector de alta inversión.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>Sin botón de WhatsApp</strong><span>Canal de contacto preferido para servicios locales en España. Su ausencia es fuga directa de leads.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>CTA principal compite por precio, no por valor</strong><span>"¡MEJORAMOS CUALQUIER PRESUPUESTO!" posiciona como la opción más barata.</span></div></div>
+          <div class="fd w"><div class="fi">⚠️</div><div><strong>Formulario sin campos claros ni promesa de respuesta</strong><span>El usuario no sabe qué pasará tras enviar. Alta tasa de abandono estimada.</span></div></div>
+          <div class="fd o"><div class="fi">✅</div><div><strong>Web responsive sin enlaces rotos</strong><span>Sin scroll horizontal en 375px. 10 enlaces internos verificados con HTTP 200.</span></div></div>
         </div>
       </div>
     </div>
-    <div class="recs">
-      <h3>Recomendaciones accionables</h3>
-      <div class="rec-item urgente">
-        <div class="prio">🔴</div>
-        <div class="rec-text">
-          <strong>Implementar LocalBusiness Schema</strong>
-          <p>Añadir en el &lt;head&gt; el JSON-LD con nombre, dirección, teléfonos, horarios y coordenadas. Generar el código en schema.dev y verificar con Google Rich Results Test.</p>
-        </div>
+
+    <div class="cat">
+      <div class="cat-hd" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="cat-left"><span class="cat-ico">📱</span><div><div class="cat-name">Redes Sociales</div><div class="cat-sub">Instagram · Facebook · Twitter</div></div></div>
+        <span class="cat-sc sc-r">22/100</span>
       </div>
-      <div class="rec-item urgente">
-        <div class="prio">🔴</div>
-        <div class="rec-text">
-          <strong>Añadir alt text descriptivo a todas las imágenes</strong>
-          <p>Formato: "cortinas de cristal instaladas en terraza de restaurante en Málaga" (descriptivo + palabra clave + localización). Hacerlo desde el gestor de medios de WordPress.</p>
-        </div>
-      </div>
-      <div class="rec-item importante">
-        <div class="prio">🟡</div>
-        <div class="rec-text">
-          <strong>Eliminar /mosquiteras-prueba.html y regenerar sitemap</strong>
-          <p>Redirigir esa URL a /productos/mosquiteras.html con un 301. Regenerar el sitemap con Yoast SEO o RankMath y forzar reindexación desde Google Search Console.</p>
+      <div class="cat-bd">
+        <div class="cbar"><div class="cbar-fill fill-red" style="width:22%"></div></div>
+        <div class="findings">
+          <div class="fd e"><div class="fi">❌</div><div><strong>Instagram: 142 seguidores · 52 posts</strong><span>Presencia muy baja para un negocio de 15 años. Ningún post reciente verificable con engagement.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>Bio sin diferenciador ni CTA</strong><span>"Cortinas de cristal / Techos móviles / Toldos / Aluminio / PVC -- 951 100 603" — lista de productos sin razón para elegirles.</span></div></div>
+          <div class="fd e"><div class="fi">❌</div><div><strong>Sin estrategia de contenido</strong><span>No hay patrón: ni antes/después, ni proceso de instalación, ni testimonios en vídeo.</span></div></div>
+          <div class="fd o"><div class="fi">✅</div><div><strong>Presencia en 3 plataformas</strong><span>Instagram, Facebook y Twitter existen. La base está — falta activarla.</span></div></div>
         </div>
       </div>
     </div>
+
+    <div class="cat">
+      <div class="cat-hd" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="cat-left"><span class="cat-ico">💰</span><div><div class="cat-name">Oferta y Precios</div><div class="cat-sub">Transparencia · Financiación · Paquetes</div></div></div>
+        <span class="cat-sc sc-a">45/100</span>
+      </div>
+      <div class="cat-bd">
+        <div class="cbar"><div class="cbar-fill fill-amber" style="width:45%"></div></div>
+        <div class="findings">
+          <div class="fd e"><div class="fi">❌</div><div><strong>Sin precios visibles</strong><span>Todo requiere solicitar presupuesto. Genera fricción para clientes que solo quieren orientarse.</span></div></div>
+          <div class="fd o"><div class="fi">✅</div><div><strong>Financiación disponible</strong><span>Se menciona financiación — ventaja competitiva que debería estar mucho más destacada en hero y páginas de producto.</span></div></div>
+          <div class="fd o"><div class="fi">✅</div><div><strong>Garantía de 10 años</strong><span>Diferenciador real y potente. Necesita más prominencia visual y presencia en cada página de producto.</span></div></div>
+          <div class="fd o"><div class="fi">✅</div><div><strong>Gama de productos amplia</strong><span>13 categorías cubren la mayoría del mercado de cerramientos y protección solar en Málaga.</span></div></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- SECCIÓN 4: SEO ON-PAGE -->
-<div class="section container">
-  <div class="section-header">
-    <div class="title-group">
-      <div class="section-icon" style="background:#f0fff4">📝</div>
-      <h2>SEO On-Page & Contenido<small>Palabras clave · Blog · Localización · Linkbuilding</small></h2>
-    </div>
-    <div class="score-badge mejorable">5/10</div>
-  </div>
-  <div class="section-body">
-    <div class="problems">
-      <h3>Problemas críticos detectados</h3>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Blog completamente abandonado</strong>
-          <p>Existe sección de blog con artículos como "Ser más feliz con Lumisol" — contenido sin estrategia de palabras clave, sin regularidad y sin valor informacional. El blog no genera tráfico orgánico y transmite imagen de abandono.</p>
-        </div>
-      </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Cero páginas de localización secundaria</strong>
-          <p>Lumisol opera en toda Málaga y Marbella, pero no existen páginas para Torremolinos, Fuengirola, Benalmádena, Mijas, Estepona o Nerja — municipios con alto volumen de búsquedas de "cortinas de cristal + [ciudad]".</p>
-        </div>
-      </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Sin intención de búsqueda informacional cubierta</strong>
-          <p>No existen páginas que respondan preguntas como "¿Cuánto cuesta una cortina de cristal?", "¿Qué diferencia hay entre cortina de cristal y cerramiento?". Estas búsquedas tienen volumen alto y baja competencia.</p>
-        </div>
-      </div>
-    </div>
-    <div class="recs">
-      <h3>Recomendaciones accionables</h3>
-      <div class="rec-item urgente">
-        <div class="prio">🔴</div>
-        <div class="rec-text">
-          <strong>Crear 5-6 páginas de localización</strong>
-          <p>Una página por municipio clave: /cortinas-de-cristal-torremolinos.html, /cerramientos-terrazas-fuengirola.html, etc. Cada página, 600-800 palabras con variaciones locales de la keyword. Investigar volúmenes con Ubersuggest.</p>
-        </div>
-      </div>
-      <div class="rec-item importante">
-        <div class="prio">🟡</div>
-        <div class="rec-text">
-          <strong>Reestructurar el blog con estrategia de contenido</strong>
-          <p>Publicar 1 artículo mensual: <em>"¿Cuánto cuesta instalar cortinas de cristal en Málaga?"</em>, <em>"Cortinas de cristal vs. cerramiento de aluminio"</em>, <em>"Cómo limpiar tus cortinas de cristal"</em>. Capturan tráfico de alta intención de compra.</p>
-        </div>
-      </div>
-      <div class="rec-item importante">
-        <div class="prio">🟡</div>
-        <div class="rec-text">
-          <strong>Añadir FAQ con schema FAQPage al pie de páginas de producto</strong>
-          <p>5-6 preguntas frecuentes por página de producto. Ejemplo: <em>"¿Se pueden instalar en comunidades de vecinos?"</em>, <em>"¿Cuánto tardan en instalarse?"</em>. Genera featured snippets en Google.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SECCIÓN 5: CONVERSIÓN -->
-<div class="section container">
-  <div class="section-header">
-    <div class="title-group">
-      <div class="section-icon" style="background:#fff5f5">🎯</div>
-      <h2>Conversión & Captación de Leads<small>Formularios · Social proof · Trust signals · Urgencia</small></h2>
-    </div>
-    <div class="score-badge critico">3/10</div>
-  </div>
-  <div class="section-body">
-    <div class="problems">
-      <h3>Problemas críticos detectados</h3>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Cero prueba social en toda la web</strong>
-          <p>No hay ni un solo testimonio, reseña o caso de éxito con nombre y foto real. En un sector donde la inversión del cliente puede superar los 3.000-10.000€, la ausencia de social proof es el mayor freno a la conversión. Lumisol tiene 15 años y cientos de clientes — ninguno visible.</p>
-        </div>
-      </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Formulario de contacto sin contexto ni campos claros</strong>
-          <p>El formulario tiene un botón "Enviar" pero sin campos claramente definidos, sin horario de respuesta, sin promesa de seguimiento. El usuario no sabe qué va a pasar tras enviarlo. Tasa de abandono estimada: muy alta.</p>
-        </div>
-      </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Sin elementos de urgencia ni valor añadido para actuar hoy</strong>
-          <p>No hay ningún incentivo para contactar ahora vs. dentro de 3 semanas. Sin ofertas temporales, sin "presupuesto en 24h", sin calculadora de precio estimado ni chat de respuesta inmediata.</p>
-        </div>
-      </div>
-    </div>
-    <div class="recs">
-      <h3>Recomendaciones accionables</h3>
-      <div class="rec-item urgente">
-        <div class="prio">🔴</div>
-        <div class="rec-text">
-          <strong>Añadir sección de testimonios reales con foto</strong>
-          <p>Solicitar a 10-15 clientes una foto y 2-3 líneas de valoración. Mostrarlos en carrusel en la home. Si tienen reseñas en Google Maps, importarlas con el plugin Google Reviews Widget. El sector construcción convierte hasta 3x más con social proof visible.</p>
-        </div>
-      </div>
-      <div class="rec-item urgente">
-        <div class="prio">🔴</div>
-        <div class="rec-text">
-          <strong>Rediseñar el formulario de contacto</strong>
-          <p>Campos mínimos: Nombre, Teléfono, Tipo de instalación (desplegable), Superficie aproximada. Añadir debajo: <em>"Te llamamos en menos de 24h en horario laboral. Sin compromiso."</em> Reduce fricción y gestiona expectativas.</p>
-        </div>
-      </div>
-      <div class="rec-item importante">
-        <div class="prio">🟡</div>
-        <div class="rec-text">
-          <strong>Añadir botón de WhatsApp fijo + barra sticky con CTA</strong>
-          <p>Botón de WhatsApp visible en todas las páginas en posición fija inferior derecha. En páginas de producto, añadir barra sticky inferior con teléfono principal y texto: "Llámanos ahora — respuesta en 24h". Herramienta: plugin WP WhatsApp Chat.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SECCIÓN 6: ARQUITECTURA -->
-<div class="section container">
-  <div class="section-header">
-    <div class="title-group">
-      <div class="section-icon" style="background:#ebf8ff">🏗️</div>
-      <h2>Arquitectura & Estructura Web<small>Páginas · URLs · Localización · Expansión</small></h2>
-    </div>
-    <div class="score-badge mejorable">5/10</div>
-  </div>
-  <div class="section-body">
-    <div class="problems">
-      <h3>Problemas críticos detectados</h3>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Solo 23 páginas indexadas para un negocio con 15 productos y cobertura provincial</strong>
-          <p>Competidores con 80-120 páginas tienen mayor superficie de indexación y capturan más keywords de cola larga. El sitio actual deja sin cubrir la mayoría del mercado potencial en búsquedas locales.</p>
-        </div>
-      </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Páginas de producto genéricas sin diferenciación por tipo de cliente</strong>
-          <p>La página de cortinas de cristal mezcla clientes residenciales, restaurantes y locales comerciales. Cada segmento tiene necesidades, objeciones y palabras clave distintas. Sin páginas separadas, se pierde posicionamiento específico.</p>
-        </div>
-      </div>
-      <div class="problem-item">
-        <div class="icon">⚠️</div>
-        <div class="text">
-          <strong>Sin página de presupuesto dedicada</strong>
-          <p>La ruta de conversión más directa ("quiero pedir precio") no tiene destino propio. Un usuario que busca "presupuesto cortinas de cristal Málaga" no encuentra una landing page específica para esa intención de compra.</p>
-        </div>
-      </div>
-    </div>
-    <div class="recs">
-      <h3>Recomendaciones accionables</h3>
-      <div class="rec-item urgente">
-        <div class="prio">🔴</div>
-        <div class="rec-text">
-          <strong>Crear landing page de presupuesto dedicada</strong>
-          <p>Página /presupuesto-cortinas-de-cristal-malaga.html exclusiva para captar solicitudes, con formulario detallado, beneficios de pedir precio con Lumisol y testimonio de cliente. Puede recibir tráfico de Google Ads y SEO al mismo tiempo.</p>
-        </div>
-      </div>
-      <div class="rec-item importante">
-        <div class="prio">🟡</div>
-        <div class="rec-text">
-          <strong>Crear subpáginas por segmento de cliente</strong>
-          <p>/cortinas-de-cristal-restaurantes-malaga.html, /cortinas-de-cristal-comunidades-vecinos-malaga.html, /cerramientos-terrazas-hoteles-malaga.html. Cada segmento tiene keywords propias, menor competencia y mayor tasa de conversión.</p>
-        </div>
-      </div>
-      <div class="rec-item futuro">
-        <div class="prio">🟢</div>
-        <div class="rec-text">
-          <strong>Añadir página "¿Cuánto cuesta?" con rangos de precio</strong>
-          <p>Una página /precios-cortinas-de-cristal-malaga.html con rangos orientativos por metro cuadrado capta tráfico de alta intención y filtra clientes no cualificados antes de que llamen. Muy bajo nivel de competencia en Google.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- TOP 5 -->
-<div class="top5-section">
-  <h2>Top 5 Acciones Prioritarias</h2>
-  <table class="top5-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Acción</th>
-        <th>Impacto</th>
-        <th>Dificultad</th>
-        <th>Tiempo estimado</th>
-      </tr>
-    </thead>
+<!-- COPY -->
+<div class="w" id="copy">
+  <div class="h2">✍️ Análisis del Copy — Antes y Después</div>
+  <table class="copy-t">
+    <thead><tr><th>Elemento</th><th>Actual (problema)</th><th>Propuesta mejorada</th></tr></thead>
     <tbody>
       <tr>
-        <td class="num-cell">1</td>
-        <td><strong>Añadir 10 testimonios reales con foto en la home</strong></td>
-        <td><span class="impact-badge alto">Muy alto</span></td>
-        <td><span class="diff-badge baja">Baja</span></td>
-        <td>3-5 días</td>
+        <td class="elem">H1 Home</td>
+        <td><div class="bad">Describe qué hacen, no qué gana el cliente</div>"Cortinas de Cristal en Málaga y Cerramientos para terrazas"</td>
+        <td><div class="good">Beneficio + diferenciador</div>"Transforma tu terraza con cortinas de cristal a medida — Málaga desde 2007"</td>
       </tr>
       <tr>
-        <td class="num-cell">2</td>
-        <td><strong>Implementar LocalBusiness Schema + alt texts en imágenes</strong></td>
-        <td><span class="impact-badge alto">Alto</span></td>
-        <td><span class="diff-badge media">Media</span></td>
-        <td>1-2 días</td>
+        <td class="elem">CTA Principal</td>
+        <td><div class="bad">Posicionamiento de precio bajo</div>"¡MEJORAMOS CUALQUIER PRESUPUESTO!"</td>
+        <td><div class="good">Urgencia + valor</div>"Solicita tu presupuesto gratis — Respuesta en 24h"</td>
       </tr>
       <tr>
-        <td class="num-cell">3</td>
-        <td><strong>Crear 5 páginas de localización (Torremolinos, Fuengirola…)</strong></td>
-        <td><span class="impact-badge alto">Muy alto</span></td>
-        <td><span class="diff-badge media">Media</span></td>
-        <td>1-2 semanas</td>
+        <td class="elem">Bio Instagram</td>
+        <td><div class="bad">Lista de productos sin propuesta de valor</div>"Cortinas de cristal / Techos móviles / Toldos / Aluminio / PVC -- 951 100 603"</td>
+        <td><div class="good">Diferenciador + CTA</div>"Transformamos terrazas en Málaga desde 2007 🔨 Fabricación propia · 10 años de garantía 👇 Presupuesto gratis"</td>
       </tr>
       <tr>
-        <td class="num-cell">4</td>
-        <td><strong>Rediseñar el hero section y cambiar el CTA principal</strong></td>
-        <td><span class="impact-badge alto">Alto</span></td>
-        <td><span class="diff-badge media">Media</span></td>
-        <td>3-5 días</td>
+        <td class="elem">Trust signal</td>
+        <td><div class="bad">Frase vacía sin evidencia</div>"los clientes satisfechos son nuestro éxito"</td>
+        <td><div class="good">Cifras reales</div>"+500 proyectos en Málaga y Marbella · 4.9⭐ en Google"</td>
       </tr>
       <tr>
-        <td class="num-cell">5</td>
-        <td><strong>Rediseñar formulario de contacto + añadir botón WhatsApp</strong></td>
-        <td><span class="impact-badge alto">Alto</span></td>
-        <td><span class="diff-badge baja">Baja</span></td>
-        <td>1-2 días</td>
+        <td class="elem">Propuesta de valor</td>
+        <td><div class="bad">Genérica — cualquier empresa la puede decir</div>"servicio personal de principio a fin"</td>
+        <td><div class="good">Específica y verificable</div>"Fabricamos en nuestros talleres de Málaga — sin intermediarios y con garantía de 10 años"</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<!-- ROADMAP -->
-<div class="roadmap">
-  <h2>Plan de Acción por Fases</h2>
-  <div class="phases">
-    <div class="phase">
-      <div class="phase-header f1">Fase 1 — Victorias rápidas<small>0-30 días</small></div>
-      <div class="phase-body">
-        <ul>
-          <li>Añadir testimonios reales con foto a la home</li>
-          <li>Añadir botón de WhatsApp visible en todas las páginas</li>
-          <li>Implementar LocalBusiness Schema</li>
-          <li>Añadir alt texts a todas las imágenes</li>
-          <li>Eliminar la página /mosquiteras-prueba.html</li>
-          <li>Rediseñar el formulario de contacto</li>
-          <li>Cambiar CTA principal por "Presupuesto gratis en 24h"</li>
-        </ul>
-      </div>
-    </div>
-    <div class="phase">
-      <div class="phase-header f2">Fase 2 — Crecimiento orgánico<small>1-3 meses</small></div>
-      <div class="phase-body">
-        <ul>
-          <li>Crear 5-6 páginas de localización Costa del Sol</li>
-          <li>Rediseñar el hero y mejorar la identidad visual</li>
-          <li>Publicar 3 artículos de blog con keywords de compra</li>
-          <li>Simplificar el menú de 13 a 5-6 ítems</li>
-          <li>Añadir galería de proyectos con fotos profesionales</li>
-        </ul>
-      </div>
-    </div>
-    <div class="phase">
-      <div class="phase-header f3">Fase 3 — Escalada<small>3-6 meses</small></div>
-      <div class="phase-body">
-        <ul>
-          <li>Crear subpáginas por segmento de cliente</li>
-          <li>Lanzar landing page de presupuesto (SEO + Ads)</li>
-          <li>Añadir FAQ con schema en páginas de producto</li>
-          <li>Estrategia activa de reviews en Google Maps</li>
-          <li>Evaluar rediseño completo con tema premium</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+<!-- DATOS TÉCNICOS -->
+<div class="w" id="datos">
+  <div class="h2">🔬 Datos Técnicos Verificados</div>
+  <div class="alert">⚠️ <div><strong>Nota metodológica:</strong> Todos los datos marcados con "Playwright" fueron obtenidos con un navegador real renderizando JavaScript. Los datos de WebFetch pueden diferir al ser HTML estático — en caso de conflicto, prevalece siempre el dato de Playwright.</div></div>
+  <table class="dt">
+    <thead><tr><th>Check</th><th>Valor detectado</th><th>Estado</th><th>Fuente</th></tr></thead>
+    <tbody>
+      <tr><td>Protocolo</td><td>HTTPS</td><td><span class="bl ok">OK</span></td><td>Playwright</td></tr>
+      <tr><td>Mixed Content</td><td>0 recursos HTTP</td><td><span class="bl ok">OK</span></td><td>Playwright</td></tr>
+      <tr><td>HTML lang</td><td>No definido (vacío)</td><td><span class="bl er">ERROR</span></td><td>Playwright</td></tr>
+      <tr><td>Canonical</td><td>No encontrado en ninguna página</td><td><span class="bl er">ERROR</span></td><td>Playwright</td></tr>
+      <tr><td>Open Graph</td><td>Completamente ausente</td><td><span class="bl er">ERROR</span></td><td>Playwright</td></tr>
+      <tr><td>Schema Markup</td><td>LocalBusiness presente pero incompleto (falta openingHours, aggregateRating, sameAs)</td><td><span class="bl wn">AVISO</span></td><td>Playwright</td></tr>
+      <tr><td>Title</td><td>66 chars — "▷ Cerramientos para Terrazas... ⇒Lumisol" (límite: 60)</td><td><span class="bl wn">AVISO</span></td><td>Playwright</td></tr>
+      <tr><td>Meta Description</td><td>176 chars (límite: 160)</td><td><span class="bl wn">AVISO</span></td><td>Playwright</td></tr>
+      <tr><td>H1</td><td>1 presente con keyword</td><td><span class="bl ok">OK</span></td><td>Playwright</td></tr>
+      <tr><td>Imágenes totales</td><td>23</td><td><span class="bl wn">—</span></td><td>Playwright</td></tr>
+      <tr><td>Imágenes sin alt</td><td>10 de 23 (43%)</td><td><span class="bl er">ERROR</span></td><td>Playwright</td></tr>
+      <tr><td>Imágenes WebP</td><td>0 de 23 (100% JPG/PNG)</td><td><span class="bl er">ERROR</span></td><td>Playwright</td></tr>
+      <tr><td>Mobile responsive</td><td>Sin scroll horizontal en 375px</td><td><span class="bl ok">OK</span></td><td>Playwright</td></tr>
+      <tr><td>CTA en móvil</td><td>Solo "Contacto" — sin WhatsApp ni presupuesto</td><td><span class="bl er">ERROR</span></td><td>Playwright</td></tr>
+      <tr><td>robots.txt</td><td>Existe, bloquea /galeria /component /old/</td><td><span class="bl ok">OK</span></td><td>WebFetch</td></tr>
+      <tr><td>Sitemap.xml</td><td>23 URLs, todas con lastmod 2021-10-05</td><td><span class="bl er">ERROR</span></td><td>WebFetch</td></tr>
+      <tr><td>HSTS</td><td>No detectado en cabeceras</td><td><span class="bl wn">AVISO</span></td><td>Headers HTTP</td></tr>
+      <tr><td>X-Powered-By</td><td>Expuesto en cabeceras</td><td><span class="bl wn">AVISO</span></td><td>Headers HTTP</td></tr>
+      <tr><td>URLs rotas (muestra 10)</td><td>0 errores 404</td><td><span class="bl ok">OK</span></td><td>Playwright</td></tr>
+      <tr><td>Página de prueba indexada</td><td>/mosquiteras-prueba.html en sitemap y accesible</td><td><span class="bl er">ERROR</span></td><td>WebFetch</td></tr>
+      <tr><td>Tráfico orgánico</td><td>61 visitas/mes</td><td><span class="bl er">ERROR</span></td><td>Ubersuggest</td></tr>
+      <tr><td>Keywords top 30</td><td>0 keywords posicionadas</td><td><span class="bl er">ERROR</span></td><td>Ubersuggest + Bing</td></tr>
+      <tr><td>Backlinks</td><td>67 totales · 12 dominios de referencia</td><td><span class="bl wn">AVISO</span></td><td>Ubersuggest</td></tr>
+      <tr><td>Instagram</td><td>142 seguidores · 52 posts</td><td><span class="bl er">ERROR</span></td><td>Playwright/Meta</td></tr>
+      <tr><td>Meta Ads activos</td><td>No verificable (403 en Biblioteca de Anuncios)</td><td><span class="bl wn">N/D</span></td><td>WebFetch</td></tr>
+    </tbody>
+  </table>
 </div>
 
-<!-- DATOS DE TRÁFICO REAL -->
-<div class="section-divider">Datos de tráfico real — obtenidos mediante análisis automatizado</div>
+<!-- PLAN DE ACCIÓN -->
+<div class="w" id="plan">
+  <div class="h2">📅 Plan de Acción Unificado</div>
+  <table class="plan-t">
+    <thead><tr><th>Prioridad</th><th>Acción</th><th>Impacto</th><th>Esfuerzo</th><th>Área</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pb p1">🔴 Crítico</span></td><td>Añadir lang="es" a la etiqueta &lt;html&gt;</td><td class="ih">Muy alto</td><td>Muy bajo</td><td>SEO</td></tr>
+      <tr><td><span class="pb p1">🔴 Crítico</span></td><td>Implementar canonical en todas las páginas</td><td class="ih">Muy alto</td><td>Bajo</td><td>SEO</td></tr>
+      <tr><td><span class="pb p1">🔴 Crítico</span></td><td>Añadir Open Graph completo (título, descripción, imagen)</td><td class="ih">Muy alto</td><td>Bajo</td><td>SEO + RRSS</td></tr>
+      <tr><td><span class="pb p1">🔴 Crítico</span></td><td>Añadir botón de WhatsApp fijo en toda la web</td><td class="ih">Muy alto</td><td>Muy bajo</td><td>Conversión</td></tr>
+      <tr><td><span class="pb p1">🔴 Crítico</span></td><td>Añadir 10 testimonios reales con foto en la home</td><td class="ih">Muy alto</td><td>Bajo</td><td>Conversión</td></tr>
+      <tr><td><span class="pb p1">🔴 Crítico</span></td><td>Eliminar /mosquiteras-prueba.html y regenerar sitemap</td><td class="ih">Alto</td><td>Muy bajo</td><td>SEO</td></tr>
+      <tr><td><span class="pb p1">🔴 Crítico</span></td><td>Reclamar y completar ficha de Google Business</td><td class="ih">Muy alto</td><td>Bajo</td><td>Local SEO</td></tr>
+      <tr><td><span class="pb p2">🟠 Alto</span></td><td>Cambiar CTA principal por "Presupuesto gratis en 24h"</td><td class="ih">Alto</td><td>Muy bajo</td><td>Copy</td></tr>
+      <tr><td><span class="pb p2">🟠 Alto</span></td><td>Completar schema LocalBusiness (horarios, sameAs, descripción)</td><td class="ih">Alto</td><td>Bajo</td><td>SEO</td></tr>
+      <tr><td><span class="pb p2">🟠 Alto</span></td><td>Añadir alt text descriptivo a las 10 imágenes sin texto</td><td class="ih">Alto</td><td>Bajo</td><td>SEO</td></tr>
+      <tr><td><span class="pb p2">🟠 Alto</span></td><td>Crear 5 páginas de localización (Torremolinos, Fuengirola…)</td><td class="ih">Muy alto</td><td>Medio</td><td>SEO</td></tr>
+      <tr><td><span class="pb p2">🟠 Alto</span></td><td>Rediseñar formulario de contacto con campos y promesa de respuesta</td><td class="ih">Alto</td><td>Bajo</td><td>Conversión</td></tr>
+      <tr><td><span class="pb p2">🟠 Alto</span></td><td>Rediseñar bio de Instagram con diferenciador y CTA</td><td class="im">Medio</td><td>Muy bajo</td><td>RRSS</td></tr>
+      <tr><td><span class="pb p2">🟠 Alto</span></td><td>Activar estrategia de reseñas en Google Maps</td><td class="ih">Alto</td><td>Bajo</td><td>Reputación</td></tr>
+      <tr><td><span class="pb p3">🟡 Medio</span></td><td>Convertir las 23 imágenes a formato WebP</td><td class="ih">Alto</td><td>Bajo</td><td>Velocidad</td></tr>
+      <tr><td><span class="pb p3">🟡 Medio</span></td><td>Reorientar blog a keywords de compra real (1 artículo/mes)</td><td class="ih">Alto</td><td>Medio</td><td>Contenido</td></tr>
+      <tr><td><span class="pb p3">🟡 Medio</span></td><td>Simplificar menú de 13 a 5-6 ítems agrupados</td><td class="im">Medio</td><td>Bajo</td><td>UX</td></tr>
+      <tr><td><span class="pb p3">🟡 Medio</span></td><td>Añadir FAQPage schema en páginas de producto principales</td><td class="ih">Alto</td><td>Medio</td><td>SEO</td></tr>
+      <tr><td><span class="pb p3">🟡 Medio</span></td><td>Destacar financiación y garantía de 10 años en hero y fichas</td><td class="im">Medio</td><td>Muy bajo</td><td>Conversión</td></tr>
+      <tr><td><span class="pb p4">🟢 Largo plazo</span></td><td>Crear landing page de presupuesto (SEO + Google Ads)</td><td class="ih">Muy alto</td><td>Alto</td><td>Conversión</td></tr>
+      <tr><td><span class="pb p4">🟢 Largo plazo</span></td><td>Crear subpáginas por segmento (restaurantes, comunidades, hoteles)</td><td class="ih">Alto</td><td>Alto</td><td>SEO</td></tr>
+      <tr><td><span class="pb p4">🟢 Largo plazo</span></td><td>Lanzar campaña Meta Ads con creativos antes/después</td><td class="ih">Muy alto</td><td>Alto</td><td>Ads</td></tr>
+      <tr><td><span class="pb p4">🟢 Largo plazo</span></td><td>Sistema de email post-venta y solicitud de referidos</td><td class="im">Medio</td><td>Medio</td><td>Retención</td></tr>
+    </tbody>
+  </table>
+</div>
 
-<div class="traffic-section">
-  <h2>Tráfico Web Real — Datos Verificados</h2>
-
-  <div class="traffic-hero">
-    <div class="t-label">
-      Visitas orgánicas mensuales estimadas
-      <small>Fuente: Ubersuggest · Junio 2026</small>
+<!-- QUICK WINS -->
+<div class="w" id="quickwins">
+  <div class="h2">⚡ Quick Wins — Esta Semana</div>
+  <div class="qw-grid">
+    <div class="qw">
+      <div class="qw-n">01</div>
+      <h4>Añadir lang="es" y canonical</h4>
+      <p>Dos líneas de código en el &lt;head&gt;. El impacto SEO es inmediato en el próximo rastreo de Google. Tiempo: 15 minutos.</p>
+      <span class="qt">⏱ 15 min</span>
     </div>
-    <div class="t-num">61 <span>/mes</span></div>
-    <div class="t-note">
-      <strong>Diagnóstico crítico</strong>
-      Una empresa con 15 años de experiencia y fabricación propia recibe menos de 61 visitas orgánicas al mes. El potencial de crecimiento con las mejoras del informe es enorme.
+    <div class="qw">
+      <div class="qw-n">02</div>
+      <h4>Botón de WhatsApp fijo</h4>
+      <p>Plugin WP WhatsApp Chat con número principal y mensaje predefinido. Cero coste, máximo impacto en leads inmediatos.</p>
+      <span class="qt">⏱ 1 hora</span>
+    </div>
+    <div class="qw">
+      <div class="qw-n">03</div>
+      <h4>Cambiar el CTA principal</h4>
+      <p>De "¡MEJORAMOS CUALQUIER PRESUPUESTO!" a "Solicita tu presupuesto gratis — respuesta en 24h". Un cambio de texto, un cambio de posicionamiento.</p>
+      <span class="qt">⏱ 15 min</span>
+    </div>
+    <div class="qw">
+      <div class="qw-n">04</div>
+      <h4>Reclamar Google Business</h4>
+      <p>Verificar y completar la ficha con fotos, horarios y descripción. Es gratis y puede generar llamadas esta misma semana.</p>
+      <span class="qt">⏱ 2 horas</span>
+    </div>
+    <div class="qw">
+      <div class="qw-n">05</div>
+      <h4>5 testimonios de clientes</h4>
+      <p>Contactar 5 clientes recientes por WhatsApp, pedir una frase + foto del resultado. Publicarlos en la home. Impacto en conversión inmediato.</p>
+      <span class="qt">⏱ 1 día</span>
     </div>
   </div>
-
-  <div class="traffic-stats">
-    <div class="t-stat">
-      <span class="val red">0</span>
-      <div class="lbl">Keywords posicionadas en Google</div>
-    </div>
-    <div class="t-stat">
-      <span class="val red">61</span>
-      <div class="lbl">Visitas orgánicas / mes</div>
-    </div>
-    <div class="t-stat">
-      <span class="val yellow">67</span>
-      <div class="lbl">Backlinks totales</div>
-    </div>
-    <div class="t-stat">
-      <span class="val yellow">12</span>
-      <div class="lbl">Dominios de referencia</div>
-    </div>
-    <div class="t-stat">
-      <span class="val red">0</span>
-      <div class="lbl">Tráfico de pago (Ads)</div>
-    </div>
-  </div>
-
-  <div class="traffic-table-wrap">
-    <h3>Páginas con más tráfico estimado</h3>
-    <table class="traffic-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Página</th>
-          <th>Visitas est./mes</th>
-          <th>Backlinks</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>1</strong></td>
-          <td>
-            <strong>¿Conoce los 10 principales usos de los aluminios?</strong>
-            <span class="url">lumisol.net/blog/conoce-los-10-principales-usos-de-los-aluminios-22.html</span>
-          </td>
-          <td><span class="visits-badge ok">41</span></td>
-          <td>0</td>
-          <td>Artículo de blog</td>
-        </tr>
-        <tr>
-          <td><strong>2</strong></td>
-          <td>
-            <strong>Página de inicio</strong>
-            <span class="url">lumisol.net/</span>
-          </td>
-          <td><span class="visits-badge ok">11</span></td>
-          <td>67</td>
-          <td>Home</td>
-        </tr>
-        <tr>
-          <td><strong>3</strong></td>
-          <td>
-            <strong>⚠️ Mosquiteras — página de PRUEBA</strong>
-            <span class="url">lumisol.net/productos/mosquiteras-prueba.html</span>
-          </td>
-          <td><span class="visits-badge">5</span></td>
-          <td>0</td>
-          <td style="color:var(--red);font-weight:700">Eliminar urgente</td>
-        </tr>
-        <tr>
-          <td><strong>4</strong></td>
-          <td>
-            <strong>Toldos en Málaga</strong>
-            <span class="url">lumisol.net/productos/toldos.html</span>
-          </td>
-          <td><span class="visits-badge">2</span></td>
-          <td>0</td>
-          <td>Producto</td>
-        </tr>
-        <tr>
-          <td><strong>5</strong></td>
-          <td>
-            <strong>Trabajos realizados</strong>
-            <span class="url">lumisol.net/trabajos-realizados.html</span>
-          </td>
-          <td><span class="visits-badge">2</span></td>
-          <td>0</td>
-          <td>Portfolio</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="keyword-warning">
-    <div class="icon">🔍</div>
-    <div>
-      <h4>No aparece en el top 30 de Google para ninguna keyword principal</h4>
-      <ul>
-        <li>"cortinas de cristal malaga"</li>
-        <li>"cerramientos terrazas malaga"</li>
-        <li>"cortinas de cristal marbella"</li>
-        <li>"pergolas malaga"</li>
-        <li>"techos de cristal malaga"</li>
-        <li>"aluminios malaga"</li>
-      </ul>
-    </div>
-  </div>
-
-  <p class="traffic-source">Datos extraídos mediante análisis automatizado con Playwright · Fuente: Ubersuggest + Bing Search · Junio 2026</p>
 </div>
 
 <footer>
-  <strong>Informe de Auditoría Web — lumisol.net</strong><br />
-  Elaborado mediante análisis técnico directo del sitio web · Junio 2026
+  <strong>Informe de Auditoría Digital Definitivo — Lumisol Mediterránea · lumisol.net</strong><br/>
+  Datos verificados con Playwright (navegador real), Ubersuggest, WebFetch y análisis de cabeceras HTTP · Junio 2026<br/>
+  Puntuación SEO: 46/100 · Puntuación Negocio: 31/100 · Global: 38/100 · Nivel: Crítico con alto potencial de mejora
 </footer>
 
+<script>
+document.querySelectorAll('.cat-hd').forEach(hd=>{
+  hd.addEventListener('click',()=>{
+    const bd=hd.nextElementSibling;
+    const isOpen=bd.classList.contains('open');
+    document.querySelectorAll('.cat-bd.open').forEach(el=>el.classList.remove('open'));
+    if(!isOpen)bd.classList.add('open');
+  });
+});
+document.querySelector('.cat-bd').classList.add('open');
+</script>
 </body>
 </html>
