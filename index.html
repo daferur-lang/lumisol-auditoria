@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auditoría Web — Lumisol.net | Junio 2026</title>
+  <style>
+    :root {
+      --primary: #1a1a2e;
+      --accent: #e94560;
+      --accent2: #0f3460;
+      --light: #f8f9fa;
+      --border: #e2e8f0;
+      --text: #2d3748;
+      --muted: #718096;
+      --green: #38a169;
+      --yellow: #d69e2e;
+      --red: #e53e3e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f0f2f5;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* COVER */
+    .cover {
+      background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 60%, #16213e 100%);
+      color: white;
+      padding: 80px 40px 60px;
+      text-align: center;
+    }
+    .cover .badge {
+      display: inline-block;
+      background: rgba(233,69,96,0.2);
+      border: 1px solid var(--accent);
+      color: #ff6b8a;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+    .cover h1 {
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .cover h1 span { color: var(--accent); }
+    .cover p.subtitle {
+      font-size: 18px;
+      color: #a0aec0;
+      margin-bottom: 40px;
+    }
+    .cover .meta {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .cover .meta-item { text-align: center; }
+    .cover .meta-item .val {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+    }
+    .cover .meta-item .lbl {
+      font-size: 12px;
+      color: #a0aec0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* LAYOUT */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* EXECUTIVE SUMMARY */
+    .exec-summary {
+      background: white;
+      border-left: 5px solid var(--accent);
+      margin: 40px auto;
+      max-width: 960px;
+      padding: 36px 40px;
+      border-radius: 0 12px 12px 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .exec-summary h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .exec-summary p {
+      font-size: 17px;
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    /* SCORE TABLE */
+    .score-section {
+      max-width: 960px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+    }
+    .score-section h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .score-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .score-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .score-circle.critico { background: #fff5f5; color: var(--red); border: 3px solid var(--red); }
+    .score-circle.mejorable { background: #fffbeb; color: var(--yellow); border: 3px solid var(--yellow); }
+    .score-circle.bien { background: #f0fff4; color: var(--green); border: 3px solid var(--green); }
+    .score-card .info .name { font-weight: 700; font-size: 15px; color: var(--primary); }
+    .score-card .info .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 10px;
+      margin-top: 4px;
+    }
+    .tag.critico { background: #fff5f5; color: var(--red); }
+    .tag.mejorable { background: #fffbeb; color: var(--yellow); }
+    .tag.bien { background: #f0fff4; color: var(--green); }
+    .bar-wrap { margin-top: 8px; background: #edf2f7; border-radius: 4px; height: 6px; width: 100%; }
+    .bar { height: 6px; border-radius: 4px; }
+    .bar.critico { background: var(--red); }
+    .bar.mejorable { background: var(--yellow); }
+    .bar.bien { background: var(--green); }
+
+    /* GLOBAL SCORE */
+    .global-score {
+      background: linear-gradient(135deg, var(--primary), var(--accent2));
+      color: white;
+      border-radius: 12px;
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .global-score .label { font-size: 18px; font-weight: 700; }
+    .global-score .label small { display: block; font-size: 13px; color: #a0aec0; font-weight: 400; margin-top: 2px; }
+    .global-score .num { font-size: 52px; font-weight: 900; color: var(--accent); }
+
+    /* SECTIONS */
+    .section {
+      background: white;
+      border-radius: 16px;
+      margin: 0 auto 32px;
+      max-width: 960px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .section-header {
+      padding: 28px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .section-header .title-group { display: flex; align-items: center; gap: 16px; }
+    .section-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .section-header h2 { font-size: 20px; font-weight: 700; color: var(--primary); }
+    .section-header h2 small { display: block; font-size: 13px; color: var(--muted); font-weight: 400; }
+    .score-badge {
+      font-size: 28px;
+      font-weight: 900;
+      padding: 8px 20px;
+      border-radius: 10px;
+    }
+    .score-badge.critico { background: #fff5f5; color: var(--red); }
+    .score-badge.mejorable { background: #fffbeb; color: var(--yellow); }
+    .score-badge.bien { background: #f0fff4; color: var(--green); }
+
+    .section-body { padding: 32px 36px; }
+
+    /* PROBLEMS */
+    .problems h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .problem-item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding: 16px;
+      background: #fff5f5;
+      border-radius: 10px;
+      border-left: 3px solid var(--red);
+    }
+    .problem-item .icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+    .problem-item .text strong { display: block; font-size: 15px; color: var(--primary); margin-bottom: 4px; }
+    .problem-item .text p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* RECOMMENDATIONS */
+    .recs { margin-top: 28px; }
+    .recs h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .rec-item {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      padding: 18px 20px;
+      background: var(--light);
+      border-radius: 10px;
+      border-left: 3px solid;
+      align-items: flex-start;
+    }
+    .rec-item.urgente { border-color: var(--red); }
+    .rec-item.importante { border-color: var(--yellow); }
+    .rec-item.futuro { border-color: var(--green); }
+    .rec-item .prio { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+    .rec-item .rec-text strong { font-size: 15px; color: var(--primary); display: block; margin-bottom: 4px; }
+    .rec-item .rec-text p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* TOP 5 */
+    .top5-section {
+      max-width: 960px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+    }
+    .top5-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: var(--primary); }
+    .top5-table {
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border-collapse: collapse;
+    }
+    .top5-table thead tr { background: var(--primary); color: white; }
+    .top5-table thead th {
+      padding: 14px 20px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .top5-table tbody tr { border-bottom: 1px solid var(--border); }
+    .top5-table tbody tr:last-child { border-bottom: none; }
+    .top5-table tbody tr:hover { background: #f7fafc; }
+    .top5-table tbody td { padding: 16px 20px; font-size: 14px; color: var(--text); }
+    .top5-table .num-cell {
+      width: 40px;
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+    .impact-badge, .diff-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 8px;
+    }
+    .impact-badge.alto { background: #fff5f5; color: var(--red); }
+    .impact-badge.medio { background: #fffbeb; color: var(--yellow); }
+    .diff-badge.baja { background: #f0fff4; color: var(--green); }
+    .diff-badge.media { background: #fffbeb; color: var(--yellow); }
+
+    /* ROADMAP */
+    .roadmap {
+      max-width: 960px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+    }
+    .roadmap h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; color: var(--primary); }
+    .phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .phase {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .phase-header {
+      padding: 20px 24px;
+      color: white;
+      font-weight: 800;
+      font-size: 16px;
+    }
+    .phase-header small { display: block; font-size: 12px; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+    .phase-header.f1 { background: linear-gradient(135deg, #e53e3e, #c53030); }
+    .phase-header.f2 { background: linear-gradient(135deg, #d69e2e, #b7791f); }
+    .phase-header.f3 { background: linear-gradient(135deg, #38a169, #276749); }
+    .phase-body { padding: 20px 24px; }
+    .phase-body ul { list-style: none; }
+    .phase-body ul li {
+      font-size: 14px;
+      color: var(--text);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .phase-body ul li:last-child { border-bottom: none; }
+    .phase-body ul li::before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+    /* FOOTER */
+    footer {
+      background: var(--primary);
+      color: #a0aec0;
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 13px;
+    }
+    footer strong { color: white; }
+
+    /* DIVIDER */
+    .section-divider {
+      max-width: 960px;
+      margin: 8px auto 32px;
+      padding: 0 20px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-divider::before, .section-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    @media (max-width: 600px) {
+      .cover { padding: 50px 20px 40px; }
+      .section-body, .section-header { padding: 20px; }
+      .exec-summary { padding: 24px 20px; margin: 20px 12px; }
+      .score-section, .top5-section, .roadmap { padding: 0 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="cover">
+  <div class="badge">Informe de Auditoría Web Profesional</div>
+  <h1>Auditoría <span>Lumisol</span>.net</h1>
+  <p class="subtitle">Diagnóstico completo · Diseño · SEO · Conversión · Arquitectura</p>
+  <div class="meta">
+    <div class="meta-item"><span class="val">6</span><span class="lbl">Dimensiones analizadas</span></div>
+    <div class="meta-item"><span class="val">4.3</span><span class="lbl">Puntuación media / 10</span></div>
+    <div class="meta-item"><span class="val">18+</span><span class="lbl">Recomendaciones accionables</span></div>
+    <div class="meta-item"><span class="val">Jun 2026</span><span class="lbl">Fecha del informe</span></div>
+  </div>
+</div>
+
+<!-- RESUMEN EJECUTIVO -->
+<div class="exec-summary">
+  <h2>Resumen Ejecutivo</h2>
+  <p>
+    Lumisol tiene una base sólida: 15 años de experiencia, fabricación propia, garantía de 10 años y presencia en Málaga y Marbella. Sin embargo, la web no refleja ese nivel de calidad ni genera la confianza necesaria para convertir visitantes en clientes. Los tres problemas principales son: <strong>ausencia total de prueba social</strong> (ningún testimonio ni reseña visible), <strong>posicionamiento SEO prácticamente congelado desde 2021</strong> (el sitio no ha crecido ni se ha actualizado), y <strong>un diseño que no transmite la profesionalidad del negocio</strong>. La buena noticia es que todos estos problemas tienen solución concreta y asequible, y las mejoras pueden generar resultados visibles en menos de 90 días.
+  </p>
+</div>
+
+<!-- PUNTUACIONES -->
+<div class="score-section container">
+  <h2>Tabla de Puntuaciones</h2>
+  <div class="global-score">
+    <div class="label">Puntuación Global
+      <small>Media de las 6 dimensiones analizadas</small>
+    </div>
+    <div class="num">4.3<span style="font-size:22px;color:#a0aec0">/10</span></div>
+  </div>
+  <div class="score-grid">
+    <div class="score-card">
+      <div class="score-circle mejorable">5</div>
+      <div class="info" style="flex:1">
+        <div class="name">Diseño Visual & Marca</div>
+        <span class="tag mejorable">Mejorable</span>
+        <div class="bar-wrap"><div class="bar mejorable" style="width:50%"></div></div>
+      </div>
+    </div>
+    <div class="score-card">
+      <div class="score-circle critico">4</div>
+      <div class="info" style="flex:1">
+        <div class="name">UX/UI & Experiencia de Usuario</div>
+        <span class="tag critico">Crítico</span>
+        <div class="bar-wrap"><div class="bar critico" style="width:40%"></div></div>
+      </div>
+    </div>
+    <div class="score-card">
+      <div class="score-circle critico">4</div>
+      <div class="info" style="flex:1">
+        <div class="name">SEO Técnico</div>
+        <span class="tag critico">Crítico</span>
+        <div class="bar-wrap"><div class="bar critico" style="width:40%"></div></div>
+      </div>
+    </div>
+    <div class="score-card">
+      <div class="score-circle mejorable">5</div>
+      <div class="info" style="flex:1">
+        <div class="name">SEO On-Page & Contenido</div>
+        <span class="tag mejorable">Mejorable</span>
+        <div class="bar-wrap"><div class="bar mejorable" style="width:50%"></div></div>
+      </div>
+    </div>
+    <div class="score-card">
+      <div class="score-circle critico">3</div>
+      <div class="info" style="flex:1">
+        <div class="name">Conversión & Captación de Leads</div>
+        <span class="tag critico">Crítico</span>
+        <div class="bar-wrap"><div class="bar critico" style="width:30%"></div></div>
+      </div>
+    </div>
+    <div class="score-card">
+      <div class="score-circle mejorable">5</div>
+      <div class="info" style="flex:1">
+        <div class="name">Arquitectura & Estructura Web</div>
+        <span class="tag mejorable">Mejorable</span>
+        <div class="bar-wrap"><div class="bar mejorable" style="width:50%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider">Análisis detallado por dimensión</div>
+
+<!-- SECCIÓN 1: DISEÑO VISUAL -->
+<div class="section container">
+  <div class="section-header">
+    <div class="title-group">
+      <div class="section-icon" style="background:#fff5f5">🎨</div>
+      <h2>Diseño Visual & Identidad de Marca<small>Coherencia visual · Imágenes · Primera impresión</small></h2>
+    </div>
+    <div class="score-badge mejorable">5/10</div>
+  </div>
+  <div class="section-body">
+    <div class="problems">
+      <h3>Problemas críticos detectados</h3>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Diseño visualmente envejecido</strong>
+          <p>El sitio no ha recibido actualización de contenido desde octubre de 2021 (confirmado en el sitemap). El aspecto general corresponde a un sitio de hace 5+ años, lo que genera desconfianza frente a competidores con webs modernas.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Sin coherencia visual de marca fuerte</strong>
+          <p>No hay un sistema de diseño definido: sin paleta de colores corporativa coherente, sin tipografías premium, sin espaciado consistente. La web parece construida con plantilla genérica sin personalización de marca.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Imágenes de proyectos sin criterio editorial</strong>
+          <p>De las 14 imágenes analizadas, 8 carecen de alt text y la galería no tiene presentación visual cuidada. Sin antes/después, sin categorización por tipo de producto ni descripción de cada proyecto.</p>
+        </div>
+      </div>
+    </div>
+    <div class="recs">
+      <h3>Recomendaciones accionables</h3>
+      <div class="rec-item urgente">
+        <div class="prio">🔴</div>
+        <div class="rec-text">
+          <strong>Rediseño del hero section (primera pantalla)</strong>
+          <p>Sustituir el hero actual por una imagen de alta calidad a pantalla completa de un proyecto de terraza con cortinas de cristal, con titular claro y CTA contrastado. Herramienta: Canva Pro o Figma para mockup previo.</p>
+        </div>
+      </div>
+      <div class="rec-item urgente">
+        <div class="prio">🔴</div>
+        <div class="rec-text">
+          <strong>Crear una identidad visual coherente</strong>
+          <p>Definir paleta de 3 colores (primario, secundario, acento), 2 tipografías (títulos y cuerpo) y aplicarla consistentemente en toda la web. Usar Adobe Color para extraer la paleta del logo actual.</p>
+        </div>
+      </div>
+      <div class="rec-item importante">
+        <div class="prio">🟡</div>
+        <div class="rec-text">
+          <strong>Galería de proyectos con fotos profesionales</strong>
+          <p>Fotografiar 10-15 instalaciones terminadas y presentarlas en formato grid con filtros por tipo (terrazas, restaurantes, locales). Plugin recomendado: Modula Gallery para WordPress.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECCIÓN 2: UX/UI -->
+<div class="section container">
+  <div class="section-header">
+    <div class="title-group">
+      <div class="section-icon" style="background:#ebf8ff">🖥️</div>
+      <h2>UX/UI & Experiencia de Usuario<small>Propuesta de valor · Navegación · CTAs · Mobile</small></h2>
+    </div>
+    <div class="score-badge critico">4/10</div>
+  </div>
+  <div class="section-body">
+    <div class="problems">
+      <h3>Problemas críticos detectados</h3>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Menú de navegación colapsado con 13 subcategorías</strong>
+          <p>El submenú de "Productos" tiene 13 ítems en cascada, lo que genera confusión y pérdida de orientación, especialmente en móvil. La navegación actual exige al usuario saber de antemano qué busca.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Propuesta de valor ambigua en los primeros 5 segundos</strong>
+          <p>El H1 describe qué hacen, pero no responde "¿Por qué contratarte a ti y no a la competencia?". No hay diferenciador claro en el header. El usuario no sabe en 5 segundos por qué Lumisol es mejor.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>CTAs débiles que compiten por precio, no por valor</strong>
+          <p>El CTA principal "¡MEJORAMOS CUALQUIER PRESUPUESTO!" posiciona al negocio como el más barato. Además hay 3 números de teléfono sin explicar para qué sirve cada uno, generando confusión.</p>
+        </div>
+      </div>
+    </div>
+    <div class="recs">
+      <h3>Recomendaciones accionables</h3>
+      <div class="rec-item urgente">
+        <div class="prio">🔴</div>
+        <div class="rec-text">
+          <strong>Redefinir el CTA principal</strong>
+          <p>Cambiar "¡Mejoramos cualquier presupuesto!" por <em>"Solicita tu presupuesto gratuito en 24h"</em> con botón destacado en color contrastado. Comunica rapidez y gratuidad sin entrar en guerra de precios.</p>
+        </div>
+      </div>
+      <div class="rec-item urgente">
+        <div class="prio">🔴</div>
+        <div class="rec-text">
+          <strong>Simplificar el menú a 5-6 ítems máximo</strong>
+          <p>Agrupar los 13 productos en 4 categorías: Cerramientos, Protección Solar, Persianas & Mamparas, Aluminios & PVC. Añadir "Presupuesto" como ítem visualmente destacado en el menú.</p>
+        </div>
+      </div>
+      <div class="rec-item importante">
+        <div class="prio">🟡</div>
+        <div class="rec-text">
+          <strong>Añadir propuesta de valor en el hero</strong>
+          <p>Ejemplo: <em>"Especialistas en cerramientos de terrazas en Málaga desde 2007. Fabricación propia, instalación en X semanas y 10 años de garantía."</em> Responde al quién, al qué y al por qué en 2 líneas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECCIÓN 3: SEO TÉCNICO -->
+<div class="section container">
+  <div class="section-header">
+    <div class="title-group">
+      <div class="section-icon" style="background:#fff5f5">⚙️</div>
+      <h2>SEO Técnico<small>Velocidad · Sitemap · Schema · Imágenes · URLs</small></h2>
+    </div>
+    <div class="score-badge critico">4/10</div>
+  </div>
+  <div class="section-body">
+    <div class="problems">
+      <h3>Problemas críticos detectados</h3>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Sitemap desactualizado desde octubre 2021</strong>
+          <p>Todas las 23 URLs del sitemap indican lastmod: 2021-10-05. Google interpreta esto como un sitio inactivo. En un sector competitivo como cerramientos en Málaga, esta señal penaliza el rastreo e indexación.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>8 de 14 imágenes en la home sin alt text</strong>
+          <p>Las imágenes de la galería "Últimos Proyectos" no tienen descripción alternativa. Supone pérdida de tráfico orgánico de búsqueda de imágenes y penalización de accesibilidad (WCAG).</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Sin schema markup ni datos estructurados + página "prueba" indexada</strong>
+          <p>No existe LocalBusiness schema, FAQPage, Review ni ServiceSchema. Esto impide rich snippets en Google, reduciendo el CTR orgánico hasta un 30%. Además, /mosquiteras-prueba.html está indexada públicamente en el sitemap.</p>
+        </div>
+      </div>
+    </div>
+    <div class="recs">
+      <h3>Recomendaciones accionables</h3>
+      <div class="rec-item urgente">
+        <div class="prio">🔴</div>
+        <div class="rec-text">
+          <strong>Implementar LocalBusiness Schema</strong>
+          <p>Añadir en el &lt;head&gt; el JSON-LD con nombre, dirección, teléfonos, horarios y coordenadas. Generar el código en schema.dev y verificar con Google Rich Results Test.</p>
+        </div>
+      </div>
+      <div class="rec-item urgente">
+        <div class="prio">🔴</div>
+        <div class="rec-text">
+          <strong>Añadir alt text descriptivo a todas las imágenes</strong>
+          <p>Formato: "cortinas de cristal instaladas en terraza de restaurante en Málaga" (descriptivo + palabra clave + localización). Hacerlo desde el gestor de medios de WordPress.</p>
+        </div>
+      </div>
+      <div class="rec-item importante">
+        <div class="prio">🟡</div>
+        <div class="rec-text">
+          <strong>Eliminar /mosquiteras-prueba.html y regenerar sitemap</strong>
+          <p>Redirigir esa URL a /productos/mosquiteras.html con un 301. Regenerar el sitemap con Yoast SEO o RankMath y forzar reindexación desde Google Search Console.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECCIÓN 4: SEO ON-PAGE -->
+<div class="section container">
+  <div class="section-header">
+    <div class="title-group">
+      <div class="section-icon" style="background:#f0fff4">📝</div>
+      <h2>SEO On-Page & Contenido<small>Palabras clave · Blog · Localización · Linkbuilding</small></h2>
+    </div>
+    <div class="score-badge mejorable">5/10</div>
+  </div>
+  <div class="section-body">
+    <div class="problems">
+      <h3>Problemas críticos detectados</h3>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Blog completamente abandonado</strong>
+          <p>Existe sección de blog con artículos como "Ser más feliz con Lumisol" — contenido sin estrategia de palabras clave, sin regularidad y sin valor informacional. El blog no genera tráfico orgánico y transmite imagen de abandono.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Cero páginas de localización secundaria</strong>
+          <p>Lumisol opera en toda Málaga y Marbella, pero no existen páginas para Torremolinos, Fuengirola, Benalmádena, Mijas, Estepona o Nerja — municipios con alto volumen de búsquedas de "cortinas de cristal + [ciudad]".</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Sin intención de búsqueda informacional cubierta</strong>
+          <p>No existen páginas que respondan preguntas como "¿Cuánto cuesta una cortina de cristal?", "¿Qué diferencia hay entre cortina de cristal y cerramiento?". Estas búsquedas tienen volumen alto y baja competencia.</p>
+        </div>
+      </div>
+    </div>
+    <div class="recs">
+      <h3>Recomendaciones accionables</h3>
+      <div class="rec-item urgente">
+        <div class="prio">🔴</div>
+        <div class="rec-text">
+          <strong>Crear 5-6 páginas de localización</strong>
+          <p>Una página por municipio clave: /cortinas-de-cristal-torremolinos.html, /cerramientos-terrazas-fuengirola.html, etc. Cada página, 600-800 palabras con variaciones locales de la keyword. Investigar volúmenes con Ubersuggest.</p>
+        </div>
+      </div>
+      <div class="rec-item importante">
+        <div class="prio">🟡</div>
+        <div class="rec-text">
+          <strong>Reestructurar el blog con estrategia de contenido</strong>
+          <p>Publicar 1 artículo mensual: <em>"¿Cuánto cuesta instalar cortinas de cristal en Málaga?"</em>, <em>"Cortinas de cristal vs. cerramiento de aluminio"</em>, <em>"Cómo limpiar tus cortinas de cristal"</em>. Capturan tráfico de alta intención de compra.</p>
+        </div>
+      </div>
+      <div class="rec-item importante">
+        <div class="prio">🟡</div>
+        <div class="rec-text">
+          <strong>Añadir FAQ con schema FAQPage al pie de páginas de producto</strong>
+          <p>5-6 preguntas frecuentes por página de producto. Ejemplo: <em>"¿Se pueden instalar en comunidades de vecinos?"</em>, <em>"¿Cuánto tardan en instalarse?"</em>. Genera featured snippets en Google.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECCIÓN 5: CONVERSIÓN -->
+<div class="section container">
+  <div class="section-header">
+    <div class="title-group">
+      <div class="section-icon" style="background:#fff5f5">🎯</div>
+      <h2>Conversión & Captación de Leads<small>Formularios · Social proof · Trust signals · Urgencia</small></h2>
+    </div>
+    <div class="score-badge critico">3/10</div>
+  </div>
+  <div class="section-body">
+    <div class="problems">
+      <h3>Problemas críticos detectados</h3>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Cero prueba social en toda la web</strong>
+          <p>No hay ni un solo testimonio, reseña o caso de éxito con nombre y foto real. En un sector donde la inversión del cliente puede superar los 3.000-10.000€, la ausencia de social proof es el mayor freno a la conversión. Lumisol tiene 15 años y cientos de clientes — ninguno visible.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Formulario de contacto sin contexto ni campos claros</strong>
+          <p>El formulario tiene un botón "Enviar" pero sin campos claramente definidos, sin horario de respuesta, sin promesa de seguimiento. El usuario no sabe qué va a pasar tras enviarlo. Tasa de abandono estimada: muy alta.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Sin elementos de urgencia ni valor añadido para actuar hoy</strong>
+          <p>No hay ningún incentivo para contactar ahora vs. dentro de 3 semanas. Sin ofertas temporales, sin "presupuesto en 24h", sin calculadora de precio estimado ni chat de respuesta inmediata.</p>
+        </div>
+      </div>
+    </div>
+    <div class="recs">
+      <h3>Recomendaciones accionables</h3>
+      <div class="rec-item urgente">
+        <div class="prio">🔴</div>
+        <div class="rec-text">
+          <strong>Añadir sección de testimonios reales con foto</strong>
+          <p>Solicitar a 10-15 clientes una foto y 2-3 líneas de valoración. Mostrarlos en carrusel en la home. Si tienen reseñas en Google Maps, importarlas con el plugin Google Reviews Widget. El sector construcción convierte hasta 3x más con social proof visible.</p>
+        </div>
+      </div>
+      <div class="rec-item urgente">
+        <div class="prio">🔴</div>
+        <div class="rec-text">
+          <strong>Rediseñar el formulario de contacto</strong>
+          <p>Campos mínimos: Nombre, Teléfono, Tipo de instalación (desplegable), Superficie aproximada. Añadir debajo: <em>"Te llamamos en menos de 24h en horario laboral. Sin compromiso."</em> Reduce fricción y gestiona expectativas.</p>
+        </div>
+      </div>
+      <div class="rec-item importante">
+        <div class="prio">🟡</div>
+        <div class="rec-text">
+          <strong>Añadir botón de WhatsApp fijo + barra sticky con CTA</strong>
+          <p>Botón de WhatsApp visible en todas las páginas en posición fija inferior derecha. En páginas de producto, añadir barra sticky inferior con teléfono principal y texto: "Llámanos ahora — respuesta en 24h". Herramienta: plugin WP WhatsApp Chat.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECCIÓN 6: ARQUITECTURA -->
+<div class="section container">
+  <div class="section-header">
+    <div class="title-group">
+      <div class="section-icon" style="background:#ebf8ff">🏗️</div>
+      <h2>Arquitectura & Estructura Web<small>Páginas · URLs · Localización · Expansión</small></h2>
+    </div>
+    <div class="score-badge mejorable">5/10</div>
+  </div>
+  <div class="section-body">
+    <div class="problems">
+      <h3>Problemas críticos detectados</h3>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Solo 23 páginas indexadas para un negocio con 15 productos y cobertura provincial</strong>
+          <p>Competidores con 80-120 páginas tienen mayor superficie de indexación y capturan más keywords de cola larga. El sitio actual deja sin cubrir la mayoría del mercado potencial en búsquedas locales.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Páginas de producto genéricas sin diferenciación por tipo de cliente</strong>
+          <p>La página de cortinas de cristal mezcla clientes residenciales, restaurantes y locales comerciales. Cada segmento tiene necesidades, objeciones y palabras clave distintas. Sin páginas separadas, se pierde posicionamiento específico.</p>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="icon">⚠️</div>
+        <div class="text">
+          <strong>Sin página de presupuesto dedicada</strong>
+          <p>La ruta de conversión más directa ("quiero pedir precio") no tiene destino propio. Un usuario que busca "presupuesto cortinas de cristal Málaga" no encuentra una landing page específica para esa intención de compra.</p>
+        </div>
+      </div>
+    </div>
+    <div class="recs">
+      <h3>Recomendaciones accionables</h3>
+      <div class="rec-item urgente">
+        <div class="prio">🔴</div>
+        <div class="rec-text">
+          <strong>Crear landing page de presupuesto dedicada</strong>
+          <p>Página /presupuesto-cortinas-de-cristal-malaga.html exclusiva para captar solicitudes, con formulario detallado, beneficios de pedir precio con Lumisol y testimonio de cliente. Puede recibir tráfico de Google Ads y SEO al mismo tiempo.</p>
+        </div>
+      </div>
+      <div class="rec-item importante">
+        <div class="prio">🟡</div>
+        <div class="rec-text">
+          <strong>Crear subpáginas por segmento de cliente</strong>
+          <p>/cortinas-de-cristal-restaurantes-malaga.html, /cortinas-de-cristal-comunidades-vecinos-malaga.html, /cerramientos-terrazas-hoteles-malaga.html. Cada segmento tiene keywords propias, menor competencia y mayor tasa de conversión.</p>
+        </div>
+      </div>
+      <div class="rec-item futuro">
+        <div class="prio">🟢</div>
+        <div class="rec-text">
+          <strong>Añadir página "¿Cuánto cuesta?" con rangos de precio</strong>
+          <p>Una página /precios-cortinas-de-cristal-malaga.html con rangos orientativos por metro cuadrado capta tráfico de alta intención y filtra clientes no cualificados antes de que llamen. Muy bajo nivel de competencia en Google.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOP 5 -->
+<div class="top5-section">
+  <h2>Top 5 Acciones Prioritarias</h2>
+  <table class="top5-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Acción</th>
+        <th>Impacto</th>
+        <th>Dificultad</th>
+        <th>Tiempo estimado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num-cell">1</td>
+        <td><strong>Añadir 10 testimonios reales con foto en la home</strong></td>
+        <td><span class="impact-badge alto">Muy alto</span></td>
+        <td><span class="diff-badge baja">Baja</span></td>
+        <td>3-5 días</td>
+      </tr>
+      <tr>
+        <td class="num-cell">2</td>
+        <td><strong>Implementar LocalBusiness Schema + alt texts en imágenes</strong></td>
+        <td><span class="impact-badge alto">Alto</span></td>
+        <td><span class="diff-badge media">Media</span></td>
+        <td>1-2 días</td>
+      </tr>
+      <tr>
+        <td class="num-cell">3</td>
+        <td><strong>Crear 5 páginas de localización (Torremolinos, Fuengirola…)</strong></td>
+        <td><span class="impact-badge alto">Muy alto</span></td>
+        <td><span class="diff-badge media">Media</span></td>
+        <td>1-2 semanas</td>
+      </tr>
+      <tr>
+        <td class="num-cell">4</td>
+        <td><strong>Rediseñar el hero section y cambiar el CTA principal</strong></td>
+        <td><span class="impact-badge alto">Alto</span></td>
+        <td><span class="diff-badge media">Media</span></td>
+        <td>3-5 días</td>
+      </tr>
+      <tr>
+        <td class="num-cell">5</td>
+        <td><strong>Rediseñar formulario de contacto + añadir botón WhatsApp</strong></td>
+        <td><span class="impact-badge alto">Alto</span></td>
+        <td><span class="diff-badge baja">Baja</span></td>
+        <td>1-2 días</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ROADMAP -->
+<div class="roadmap">
+  <h2>Plan de Acción por Fases</h2>
+  <div class="phases">
+    <div class="phase">
+      <div class="phase-header f1">Fase 1 — Victorias rápidas<small>0-30 días</small></div>
+      <div class="phase-body">
+        <ul>
+          <li>Añadir testimonios reales con foto a la home</li>
+          <li>Añadir botón de WhatsApp visible en todas las páginas</li>
+          <li>Implementar LocalBusiness Schema</li>
+          <li>Añadir alt texts a todas las imágenes</li>
+          <li>Eliminar la página /mosquiteras-prueba.html</li>
+          <li>Rediseñar el formulario de contacto</li>
+          <li>Cambiar CTA principal por "Presupuesto gratis en 24h"</li>
+        </ul>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-header f2">Fase 2 — Crecimiento orgánico<small>1-3 meses</small></div>
+      <div class="phase-body">
+        <ul>
+          <li>Crear 5-6 páginas de localización Costa del Sol</li>
+          <li>Rediseñar el hero y mejorar la identidad visual</li>
+          <li>Publicar 3 artículos de blog con keywords de compra</li>
+          <li>Simplificar el menú de 13 a 5-6 ítems</li>
+          <li>Añadir galería de proyectos con fotos profesionales</li>
+        </ul>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-header f3">Fase 3 — Escalada<small>3-6 meses</small></div>
+      <div class="phase-body">
+        <ul>
+          <li>Crear subpáginas por segmento de cliente</li>
+          <li>Lanzar landing page de presupuesto (SEO + Ads)</li>
+          <li>Añadir FAQ con schema en páginas de producto</li>
+          <li>Estrategia activa de reviews en Google Maps</li>
+          <li>Evaluar rediseño completo con tema premium</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <strong>Informe de Auditoría Web — lumisol.net</strong><br />
+  Elaborado mediante análisis técnico directo del sitio web · Junio 2026
+</footer>
+
+</body>
+</html>
